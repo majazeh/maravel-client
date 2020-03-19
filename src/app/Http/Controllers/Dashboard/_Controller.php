@@ -16,6 +16,10 @@ class _Controller extends BaseController
             'select2',
             'persian_datepicker',
             'amcharts4',
+            'fontawesome',
+            'iziToast',
+            'dashboardTheme',
+            'popper'
         ]);
     }
 }

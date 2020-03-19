@@ -1,11 +1,15 @@
 @section('scripts')
     <script src="/vendors/jquery-3.4.1.min.js"></script>
-    <script src="/vendors/popper.min.js"></script>
+    @if ($layouts->vendor->popper)
+        <script src="/vendors/popper.min.js"></script>
+    @endif
     <script src="/vendors/bootstrap-4.4.1/js/bootstrap.min.js"></script>
     @if ($layouts->vendor->select2)
         <script src="/vendors/select2-4.0.13/dist/js/select2.min.js"></script>
     @endif
-    <script src="/vendors/iziToast/js/iziToast.min.js"></script>
+    @if ($layouts->vendor->iziToast)
+        <script src="/vendors/iziToast/js/iziToast.min.js"></script>
+    @endif
     @if ($layouts->vendor->persian_datepicker)
         <script src="/vendors/persian-date/persian-date.min.js"></script>
         <script src="/vendors/persian-datepicker/js/persian-datepicker.min.js"></script>
