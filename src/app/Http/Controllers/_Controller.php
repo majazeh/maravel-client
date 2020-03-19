@@ -49,6 +49,14 @@ class _Controller extends BaseController
         {
             return $this->data->result;
         }
-        return view($view, (array) $this->data);
+        $view = response(view($view, (array) $this->data));
+        if($request->ajax())
+        {
+            $content = $view->getContent();
+            $data = json_encode($this->data->global);
+            $content = "$data\n$content";
+            $view->setContent($content);
+        }
+        return $view;
     }
 }
