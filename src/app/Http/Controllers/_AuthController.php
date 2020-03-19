@@ -11,6 +11,7 @@ class _AuthController extends Controller
 {
     public function __construct(Request $request)
     {
+        parent::__construct($request);
         $this->data->layouts->vendor->arraySetTrue([
             'select2',
             'persian_datepicker',
@@ -19,7 +20,7 @@ class _AuthController extends Controller
             'iziToast',
             'dashboardTheme',
             'popper'
-        ])
+        ]);
     }
     public function authForm(Request $request)
     {
