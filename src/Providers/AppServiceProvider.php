@@ -17,6 +17,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $breadcrumbs = config('breadcrumbs.files', []);
+        config('breadcrumbs.files', array_merge($breadcrumbs), [join(DIRECTORY_SEPARATOR, [__DIR__, '..', 'routes', 'breadcrumbs.php'])]);
     }
 
     /**
