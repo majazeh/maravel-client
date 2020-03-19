@@ -6,6 +6,7 @@ use Illuminate\Contracts\View\View as ViewView;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
@@ -17,8 +18,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $breadcrumbs = config('breadcrumbs.files', []);
-        config('breadcrumbs.files', array_merge($breadcrumbs), [join(DIRECTORY_SEPARATOR, [__DIR__, '..', 'routes', 'breadcrumbs.php'])]);
+        $breadcrumbs = config('breadcrumbs.files', [base_path('routes/breadcrumbs.php')]);
+        Config::set('breadcrumbs.files', array_merge($breadcrumbs, [join(DIRECTORY_SEPARATOR, [__DIR__, '..', 'routes', 'breadcrumbs.php'])]));
     }
 
     /**
