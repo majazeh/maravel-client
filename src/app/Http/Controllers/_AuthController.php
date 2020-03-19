@@ -9,6 +9,18 @@ use Symfony\Component\HttpFoundation\Cookie;
 
 class _AuthController extends Controller
 {
+    public function __construct(Request $request)
+    {
+        $this->data->layouts->vendor->arraySetTrue([
+            'select2',
+            'persian_datepicker',
+            'amcharts4',
+            'fontawesome',
+            'iziToast',
+            'dashboardTheme',
+            'popper'
+        ])
+    }
     public function authForm(Request $request)
     {
         $this->data->theoryRouteParms = [];
