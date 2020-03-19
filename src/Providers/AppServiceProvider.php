@@ -29,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        app('translation.loader')->addJsonPath(join(DIRECTORY_SEPARATOR, [__DIR__, '..', 'lang']));
         Blade::directive('sortView', function ($args) {
             $args = explode(',', $args);
             $args[2] = isset($args[2]) ? $args[2] : 'null';
