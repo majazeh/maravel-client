@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Dynamic;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -18,6 +19,7 @@ class _Controller extends BaseController
         $this->data = $data = new stdClass;
         $this->data->global = $global = new stdClass;
         $this->data->layouts = $layouts = new stdClass;
+        $this->data->layouts->vendor = new Dynamic;
         $this->data->module = $module = new stdClass;
         $global->description = 'Description';
         $global->title = 'Title';

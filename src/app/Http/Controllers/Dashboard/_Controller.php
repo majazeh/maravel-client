@@ -12,5 +12,10 @@ class _Controller extends BaseController
         parent::__construct($request);
         $this->data->layouts->dashboard = 'dashboard.app';
         $this->data->layouts->asideMenue = 'layouts.default-menu';
+        $this->data->layouts->vendor->arraySetTrue([
+            'select2',
+            'persian_datepicker',
+            'amcharts4',
+        ]);
     }
 }
