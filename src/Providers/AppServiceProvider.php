@@ -31,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
         if($this->app->request->header('x-forwarded-proto') == 'https')
         {
             URL::forceScheme('https');
+            $this->app['request']->server->set('HTTPS', 'on');
         }
         app('translation.loader')->addJsonPath(join(DIRECTORY_SEPARATOR, [__DIR__, '..', 'lang']));
         Blade::directive('sortView', function ($args) {
