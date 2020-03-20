@@ -2,12 +2,11 @@
 
 namespace Maravel\Providers;
 
-use Illuminate\Contracts\View\View as ViewView;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,6 +28,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if($this->app->request->header(':scheme') == 'https')
+        {
+            URL::forceScheme('https');
+        }
         app('translation.loader')->addJsonPath(join(DIRECTORY_SEPARATOR, [__DIR__, '..', 'lang']));
         Blade::directive('sortView', function ($args) {
             $args = explode(',', $args);
