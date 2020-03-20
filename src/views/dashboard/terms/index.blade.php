@@ -51,6 +51,9 @@
                     </tbody>
                 </table>
             </div>
+            <div class="d-flex justify-content-center">
+                {{$posts->render()}}
+            </div>
         </div>
     </div>
 @endsection
