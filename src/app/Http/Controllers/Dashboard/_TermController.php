@@ -8,7 +8,7 @@ class _TermController extends Controller
 {
     public function index(Request $request)
     {
-        $this->data->terms = Term::apiIndex($request->all(['order', 'sort', 'parent', 'creator']));
+        $this->data->terms = Term::apiIndex($request->all(['order', 'sort', 'parent', 'creator', 'page']));
         return $this->view($request, 'dashboard.terms.index');
     }
 

@@ -9,7 +9,7 @@ class _UserController extends Controller
 {
     public function index(Request $request)
     {
-        $this->data->users = User::apiIndex($request->all(['order', 'sort', 'status', 'type', 'gender']));
+        $this->data->users = User::apiIndex($request->all(['order', 'sort', 'status', 'type', 'gender', 'page']));
         return $this->view($request, 'dashboard.users.index');
     }
 
