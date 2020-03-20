@@ -78,7 +78,7 @@
                 </table>
             </div>
             <div class="d-flex justify-content-center">
-                {{$posts->render()}}
+                {{$users->render()}}
             </div>
         </div>
     </div>
