@@ -76,6 +76,10 @@ class AppServiceProvider extends ServiceProvider
         Blade::directive('staticVersion', function ($file) {
             return "<?php echo $file . '?v='. filemtime(app()->basePath(join(DIRECTORY_SEPARATOR, ['public', rtrim($file, '/')])))?>";
         });
+        Blade::directive('markdown', function ($content) {
+            return "<?php echo (new \cebe\markdown\Markdown())->parse($content)?>";
+        });
+
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 join(DIRECTORY_SEPARATOR, [__DIR__, '..', '..', 'assets']) => base_path()

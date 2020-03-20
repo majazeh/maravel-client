@@ -27,6 +27,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "davejamesmiller/laravel-breadcrumbs": "^5.2.1"
+        "davejamesmiller/laravel-breadcrumbs": "^5.2.1",
+        "cebe/markdown": "^1.2"
     }
 }
