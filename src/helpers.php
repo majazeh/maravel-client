@@ -1,5 +1,5 @@
 <?php
-function text2summary($str, $n = 500, $end_char = '&#8230;')
+function text2summary($str, $n = 150, $end_char = '...')
 {
     if (mb_strlen($str) < $n) {
         return $str;

@@ -84,6 +84,10 @@ class AppServiceProvider extends ServiceProvider
             return "<?php echo (new \cebe\markdown\Markdown())->parse($content)?>";
         });
 
+        Blade::directive('text2summary', function ($content) {
+            return "<?php echo text2summary($content);?>";
+        });
+
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 join(DIRECTORY_SEPARATOR, [__DIR__, '..', '..', 'assets']) => base_path()
