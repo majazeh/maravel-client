@@ -39,7 +39,7 @@
                                     @endforeach
                                 </td>
                                 <td>
-                                    {{ $term->creator->name ?: $term->creator->id }}
+                                    <a href="{{route('dashboard.users.show', $term->creator->id)}}">{{ $term->creator->name ?: $term->creator->id }}</a>
                                 </td>
                                 <td>
                                     @if ($term->can('edit'))
