@@ -2,7 +2,6 @@
 
 namespace Maravel\Providers;
 
-use App\Http\Middleware\Token;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
