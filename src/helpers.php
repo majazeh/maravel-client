@@ -21,3 +21,8 @@ function text2summary($str, $n = 150, $end_char = '...')
         }
     }
 }
+
+function snake_url($string)
+{
+    return str_replace([" "], '_', $string);
+}
