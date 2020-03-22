@@ -112,6 +112,8 @@ class _AuthController extends Controller
     }
     public function logout(Request $request)
     {
+        $request->session()->forget('APIToken');
+        $request->session()->forget('User');
         $logout = (new User)->execute('logout', [], 'post');
         return response()->json(array_merge_recursive($logout->response()->toArray(), [
             'redirect' => '/dashboard',
