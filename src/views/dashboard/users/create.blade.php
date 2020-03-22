@@ -11,7 +11,7 @@
                     </label>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary fs-10">
+            <button type="submit" class="btn btn-primary fs-10" data-alias="avatar">
                 {{__('Save avatar')}}
             </button>
         </div>
