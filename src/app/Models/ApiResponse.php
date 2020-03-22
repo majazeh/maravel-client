@@ -13,26 +13,28 @@ class ApiResponse implements Arrayable
     protected $curl, $response, $code, $content_type;
     public function __construct($curl, $response, array $options = [])
     {
-        if (false === is_resource($curl) && \get_resource_type($curl) != 'curl') {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Argument must be a valid curl resource type. %s given.',
-                    gettype($curl)
-                )
-            );
-        }
-        $this->curl = $curl;
-        $this->code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        $this->content_type = curl_getinfo($curl, CURLINFO_CONTENT_TYPE);
-        $curl_errno   = curl_errno($curl);
-        $curl_error   = curl_error($curl);
-        if ($curl_errno) {
-            throw new \Exception($curl_error);
+        if($curl !== 0)
+        {
+            if (false === is_resource($curl) && \get_resource_type($curl) != 'curl') {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'Argument must be a valid curl resource type. %s given.',
+                        gettype($curl)
+                    )
+                );
+            }
+            $this->curl = $curl;
+            $this->code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+            $this->content_type = curl_getinfo($curl, CURLINFO_CONTENT_TYPE);
+            $curl_errno   = curl_errno($curl);
+            $curl_error   = curl_error($curl);
+            if ($curl_errno) {
+                throw new \Exception($curl_error);
+            }
         }
 
-        $this->response = json_decode($response);
+        $this->response = is_array($response) || is_object($response) ? (object) $response : json_decode($response);
         if (json_last_error() !== JSON_ERROR_NONE) {
-            dd($response);
             throw new \JsonException('Could not parse data');
         }
         if (!$this->response) {

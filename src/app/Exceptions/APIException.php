@@ -37,6 +37,7 @@ class APIException extends \RuntimeException
         }
         else
         {
+            dd($this->response);
             abort($this->response->statusCode(), $this->message_text);
         }
     }

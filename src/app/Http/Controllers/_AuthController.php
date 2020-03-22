@@ -105,6 +105,7 @@ class _AuthController extends Controller
             $response['message'] = __('Welcome :*');
             $response['message_text'] = __('Welcome :*');
             $request->session()->put('APIToken', $auth->response('token'));
+            $request->session()->put('User', $auth->response()->toArray());
 
         }
         return $response;

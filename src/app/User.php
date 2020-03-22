@@ -1,6 +1,7 @@
 <?php
 namespace App;
 
+use App\Models\ApiResponse;
 
 class User extends API
 {
@@ -8,16 +9,28 @@ class User extends API
     public $with = [
         'avatar' => File::class
     ];
+    public static $me = null;
     public static $token;
 
     public static function token()
     {
         static::$token = session()->get('APIToken');
+        if(static::$token)
+        {
+            $userResponse = session()->get('User');
+            $response = new ApiResponse(0, $userResponse);
+            $userModel = new static((array) $userResponse['data'], $response);
+            static::$me = $userModel;
+        }
         return static::$token;
     }
 
     public static function me()
     {
+        if(static::$me)
+        {
+            return static::$me;
+        }
         return (new static)->cache('me');
     }
 

@@ -1,19 +1,28 @@
 <?php
 namespace App\Http\Controllers\Dashboard;
 
-use Illuminate\Http\Request;
+use App\Requests\Maravel as Request;
+
 use App\Term;
+use Illuminate\Support\Facades\Gate;
 
 class _TermController extends Controller
 {
     public function index(Request $request)
     {
+        if (Gate::has('dashboard.terms.viewAny'))
+        {
+            $this->authorize('dashboard.terms.viewAny');
+        }
         $this->data->terms = Term::apiIndex($request->all(['order', 'sort', 'parent', 'creator', 'page']));
         return $this->view($request, 'dashboard.terms.index');
     }
 
     public function create(Request $request)
     {
+        if (Gate::has('dashboard.terms.create')) {
+            $this->authorize('dashboard.terms.create');
+        }
         return $this->view($request, 'dashboard.terms.create');
     }
 
@@ -26,7 +35,9 @@ class _TermController extends Controller
 
     public function edit(Request $request, Term $term)
     {
-        $term->check('edit');
+        if (Gate::has('dashboard.terms.update')) {
+            $this->authorize('dashboard.terms.update', [$term]);
+        }
         return $this->view($request, 'dashboard.terms.create', ['term' => $term]);
     }
 
@@ -37,6 +48,9 @@ class _TermController extends Controller
 
     public function show(Request $request, Term $term)
     {
+        if (Gate::has('dashboard.terms.view')) {
+            $this->authorize('dashboard.terms.view', [$term]);
+        }
         return $this->view($request, 'dashboard.terms.show', ['term' => $term]);
     }
 }
