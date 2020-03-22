@@ -2,6 +2,7 @@
 
 namespace Maravel\Providers;
 
+use App\Http\Middleware\Token;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
@@ -36,7 +37,7 @@ class RouteServiceProvider extends ServiceProvider
             ->group(join(\DIRECTORY_SEPARATOR, [__DIR__, '..', 'routes', 'dashboard.php']));
         if(file_exists(base_path('routes' . DIRECTORY_SEPARATOR . 'dashboard.php')))
         {
-            Route::middleware(['web', 'auth'])
+            Route::middleware(['web', 'auth', Token::class])
                 ->namespace($this->namespace . '\Dashboard')
                 ->prefix('/dashboard')
                 ->as('dashboard.')

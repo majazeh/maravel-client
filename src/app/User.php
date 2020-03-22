@@ -10,6 +10,12 @@ class User extends API
     ];
     public static $token;
 
+    public static function token()
+    {
+        static::$token = session()->get('APIToken');
+        return static::$token;
+    }
+
     public static function me()
     {
         return (new static)->cache('me');

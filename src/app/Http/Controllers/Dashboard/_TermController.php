@@ -26,6 +26,7 @@ class _TermController extends Controller
 
     public function edit(Request $request, Term $term)
     {
+        $term->check('edit');
         return $this->view($request, 'dashboard.terms.create', ['term' => $term]);
     }
 

@@ -20,7 +20,24 @@ class APIException extends \RuntimeException
         return $this->response->$name;
     }
 
+    public function response()
+    {
+        return $this->response;
+    }
+
     public function report()
     {
+    }
+
+    public function render($request)
+    {
+        if($request->ajax())
+        {
+            return $this->response->json();
+        }
+        else
+        {
+            abort($this->response->statusCode(), $this->message_text);
+        }
     }
 }

@@ -25,7 +25,7 @@ class _UserController extends Controller
         ]);
     }
 
-    public function avatar(Request $request, $user)
+    public function avatarStore(Request $request, $user)
     {
         $avatar = new User;
         return $avatar->execute("%s/$user/avatar", $request->all('avatar'), 'POST')->response()->json();
@@ -52,4 +52,5 @@ class _UserController extends Controller
         $this->data['user'] = User::me();
         return $this->view($request);
     }
+
 }

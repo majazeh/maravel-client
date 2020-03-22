@@ -35,16 +35,18 @@
                                 </td>
                                 <td>
                                     @foreach ($term->parents as $parent)
-                                        <a href="{{ route('dashboard.terms.edit', ['term' => $parent]) }}"  class="badge badge-secondary">{{ $parent->title }}</a>
+                                        <a href="{{ route('dashboard.terms.show', ['term' => $parent]) }}"  class="badge badge-secondary">{{ $parent->title }}</a>
                                     @endforeach
                                 </td>
                                 <td>
                                     {{ $term->creator->name ?: $term->creator->id }}
                                 </td>
                                 <td>
-                                    <a href="{{route('dashboard.terms.edit', ['term' => $term->id])}}" title="{{__('Edit')}}">
-                                        <i class="far fa-user-cog text-primary"></i>
-                                    </a>
+                                    @if ($term->can('edit'))
+                                        <a href="{{route('dashboard.terms.edit', ['term' => $term->id])}}" title="{{__('Edit')}}">
+                                            <i class="fas fa-edit text-primary fs-14"></i>
+                                        </a>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

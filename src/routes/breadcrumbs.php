@@ -13,7 +13,7 @@ Breadcrumbs::for('dashboard.users.index', function ($trail, $data) {
 });
 Breadcrumbs::for('dashboard.users.show', function ($trail, $data) {
     $trail->parent('dashboard.users.index', $data);
-    $trail->push($data['user']->name, route('home'));
+    $trail->push($data['user']->name ?: __('Anonymouse'), route('dashboard.users.show', $data['user']->id));
 });
 
 Breadcrumbs::for('dashboard.users.edit', function ($trail, $data) {
@@ -33,7 +33,7 @@ Breadcrumbs::for('dashboard.terms.index', function ($trail, $data) {
 });
 Breadcrumbs::for('dashboard.terms.show', function ($trail, $data) {
     $trail->parent('dashboard.terms.index', $data);
-    $trail->push($data['term']->title, route('home'));
+    $trail->push($data['term']->title, route('dashboard.terms.show', $data['term']->id));
 });
 
 Breadcrumbs::for('dashboard.terms.edit', function ($trail, $data) {

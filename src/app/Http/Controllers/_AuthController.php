@@ -66,7 +66,7 @@ class _AuthController extends Controller
                     'is_ok' => true,
                     'message' => $e->message,
                     'message_text' => $e->message_text,
-                    'redirect' => route('login', ['username' => $request->cookie('login_username')])
+                    'redirect' => route('auth')
                 ]);
             } elseif ($e->statusCode() == 404) {
                 return response()->json([
@@ -94,19 +94,20 @@ class _AuthController extends Controller
         if ($auth->response('key')) {
             $theory['key'] = $auth->response('key');
         }
+        $response = [];
         $response = [
             'redirect' => $auth->response('theory') || $auth->response('callback')
                 ? $auth->response('theory') == 'auth' && !$auth->response('key') ? route('auth', ['callback' => $auth->response('callback')]) : route('auth.theory', $theory)
                 : route('dashboard.home'),
             'direct' => $auth->response('theory') || $auth->response('callback') ? false : true
         ];
-        $json = response()->json($response);
         if ($auth->response('token')) {
             $response['message'] = __('Welcome :*');
             $response['message_text'] = __('Welcome :*');
-            $json->withCookie(new Cookie('token', $auth->response('token')));
+            $request->session()->put('APIToken', $auth->response('token'));
+
         }
-        return $json;
+        return $response;
     }
     public function logout(Request $request)
     {
@@ -116,5 +117,14 @@ class _AuthController extends Controller
             'direct' => true
         ]))
         ->withCookie(new Cookie('token', null));
+    }
+    public function authAs(Request $request, $user)
+    {
+        $authAs = User::authAs($user);
+        return $this->authParse($authAs, $request);
+    }
+    public function authBack(Request $request)
+    {
+        return $this->authParse(User::authBack(), $request);
     }
 }

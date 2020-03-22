@@ -126,6 +126,7 @@ class API extends Model
         );
         if(User::$token)
         {
+
             $headers[] = 'Authorization: Bearer ' . User::$token;
         }
         $curl = curl_init($endpoint);
@@ -268,7 +269,7 @@ class API extends Model
 
     public function can($action)
     {
-        return in_array($action, $this->can);
+        return in_array($action, $this->can ?: []);
     }
     public function check($action)
     {

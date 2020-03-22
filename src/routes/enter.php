@@ -15,4 +15,5 @@ Route::get('auth/verification', 'AuthController@verification')->name('auth.verif
 
 Route::post('logout', 'AuthController@logout')->name('logout')->middleware('auth');
 
-Route::get('auth/as', 'AuthController@authAs')->name('auth.as');
+Route::post('auth/as/{user}', 'AuthController@authAs')->name('auth.as')->middleware('auth');
+Route::post('auth/back/', 'AuthController@authBack')->name('auth.back')->middleware('auth');

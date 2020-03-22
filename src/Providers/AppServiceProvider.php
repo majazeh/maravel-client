@@ -2,12 +2,12 @@
 
 namespace Maravel\Providers;
 
+use App\Http\Middleware\Token;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\URL;
-
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -28,6 +28,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Config::set('auth.defaults.guard', 'cookie');
+        Config::set('auth.guards.cookie', [
+            'driver' => 'cookie',
+            'provider' => 'users'
+        ]);
         if($this->app->request->header('x-forwarded-proto') == 'https')
         {
             URL::forceScheme('https');
