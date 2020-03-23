@@ -85,7 +85,7 @@ class AppServiceProvider extends ServiceProvider
             return "<?php echo $file . '?v='. filemtime(app()->basePath(join(DIRECTORY_SEPARATOR, ['public', rtrim($file, '/')])))?>";
         });
         Blade::directive('markdown', function ($content) {
-            return "<?php echo (new \cebe\markdown\Markdown())->parse($content)?>";
+            return "<?php echo (new \cebe\markdown\MarkdownExtra())->parse($content)?>";
         });
 
         Blade::directive('text2summary', function ($content) {
