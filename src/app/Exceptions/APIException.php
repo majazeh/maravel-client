@@ -37,6 +37,10 @@ class APIException extends \RuntimeException
         }
         else
         {
+            if(config('app.debug'))
+            {
+                return $this->response->json();
+            }
             abort($this->response->statusCode(), $this->message_text);
         }
     }
