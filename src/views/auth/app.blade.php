@@ -8,12 +8,22 @@
                     <div class="card-body">
                         <div class="text-center mb-2">
                             <a href="{{route(auth()->check() ? 'dashboard.home' : 'auth')}}" class="enter-logo direct">
-                                <img src="images/logo/logo.svg" alt="Logo">
+                                @if (auth()->check() && auth()->user()->avatar_url->url('large'))
+                                    <img src="{{auth()->user()->avatar_url->url('large')}}" alt="Avatar">
+                                @else
+                                    <img src="images/logo/logo.svg" alt="Logo">
+                                @endif
                             </a>
                         </div>
 
                         <h1 class="h5 text-center mb-4">
-                            <a href="{{route('dashboard.home')}}" class="text-white text-decoration-none">ریسلو</a>
+                            <a href="{{route(auth()->check() ? 'dashboard.home' : 'auth')}}" class="text-white text-decoration-none">
+                                @if (auth()->check())
+                                    {{auth()->user()->name ?: __('Anonymouse')}}
+                                @else
+                                    {{__('App Title')}}
+                                @endif
+                            </a>
                         </h1>
 
                         <div data-xhr="form">
