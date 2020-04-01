@@ -85,41 +85,7 @@
     <div class="form-group mb-0">
         <label>{{__('User type')}}</label>
         <div class="d-flex flex-wrap user-types">
-            <div class="richak richak-sm richak-secondary">
-                <input type="radio" name="type" id="type-admin" value="admin" @radioChecked($user->type, 'admin')>
-                <label for="type-admin">
-                    <span class="far fa-users-crown richak-icon"></span>
-                    {{__('Admin')}}
-                </label>
-            </div>
-            <div class="richak richak-sm richak-secondary">
-                <input type="radio" name="type" id="type-manager" value="manager" @radioChecked($user->type, 'manager')>
-                <label for="type-manager">
-                    <i class="fal fa-users-cog richak-icon"></i>
-                    {{__('Manager')}}
-                </label>
-            </div>
-            <div class="richak richak-sm richak-secondary">
-                <input type="radio" name="type" id="type-operator" value="operator" @radioChecked($user->type, 'operator')>
-                <label for="type-operator">
-                    <i class="fal fa-user-headset richak-icon"></i>
-                    {{__('Operator')}}
-                </label>
-            </div>
-            <div class="richak richak-sm richak-secondary">
-                <input type="radio" name="type" id="type-psychologist" value="psychologist" @radioChecked($user->type, 'psychologist')>
-                <label for="type-psychologist">
-                    <i class="fal fa-user-tie richak-icon"></i>
-                    {{__('Psychologist')}}
-                </label>
-            </div>
-            <div class="richak richak-sm richak-secondary">
-                <input type="radio" name="type" id="type-client" value="client" @radioChecked($user->type, 'client')>
-                <label for="type-client">
-                    <i class="far fa-user-shield richak-icon"></i>
-                    {{__('Client')}}
-                </label>
-            </div>
+            @includeFirst(['dashboard.users.createTypes', 'dashboard.users._createTypes'])
         </div>
     </div>
 

@@ -28,11 +28,17 @@ class _Controller extends BaseController
         $as = $request->route()->getAction('as');
         $as_split = explode('.', $as);
         $module->as = $as;
-        $module->resource = join('.', array_slice($as_split, 0, 2));
+        $module->parent = null;
+        $a_resource = array_slice($as_split, 0, -1);
+        if(count($a_resource) == 3)
+        {
+            $module->parent = Str::singular($as_split[1]);
+        }
+        $module->resource = join('.', $a_resource) ?: null;
         $module->action = join('.', array_slice($as_split, -1));
         $name = array_slice($as_split, -2, -1) ? array_slice($as_split, -2, -1)[0] : $module->action;
 
-        $module->name = $name;
+        $module->name = $module->parent ? $module->parent . '-' . $name : $name;
         $module->result = $module->action == 'index' ? $name : Str::singular($name);
     }
 

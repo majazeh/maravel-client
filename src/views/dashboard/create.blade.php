@@ -8,7 +8,7 @@
                     {{__(($module->action == 'create' ? "Create " : 'Edit ') . Str::singular($module->name))}}
                 </div>
                 @yield('before_content')
-                <form class="" action="@yield('form_action', route($module->resource . ($module->action == 'edit' ? '.update' : '.store'), $module->action == 'edit' ? [$module->result => $result->id] : null))" method="POST">
+                <form class="" action="@yield('form_action', isset(${$module->result}) ? ${$module->result}->route('update') : route("$module->resource.store", $module->parent ? request()->route()->parameters[$module->parent] : null))" method="POST">
                     @csrf
                     <input type="hidden" name="_method" value="{{$module->action == 'edit' ? 'PUT' : 'POST'}}">
                     <div class="card-body">
@@ -19,7 +19,7 @@
                             {{__(($module->action == 'create' ? 'Create ' : 'Update ' ) . Str::singular($module->name))}}
                         </button>
                         @if(Route::has($module->resource . '.index'))
-                            <a href="{{route($module->resource . '.index')}}" class="btn btn-light">{{ __('Cancel') }}</a>
+                            <a href="{{route($module->resource . '.index', $module->parent ? request()->route()->parameters[$module->parent] : null)}}" class="btn btn-light">{{ __('Cancel') }}</a>
                         @endif
                     </div>
                 </form>

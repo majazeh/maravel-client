@@ -13,9 +13,9 @@ use Route;
 
 class API extends Model
 {
-    protected $endpointPath, $route, $can, $response, $endpoint, $fake = false;
+    protected $endpointPath, $route, $can, $response, $endpoint;
     protected static $_cache = [];
-    public $filterWith, $with = [];
+    public $filterWith, $with = [], $fake = false;
     protected $guarded = [];
 
     public function __construct(array $attributes = [], ApiResponse $response = null)
@@ -215,6 +215,11 @@ class API extends Model
         return $this->cache(null, $params);
     }
 
+    public function _childIndex($parent, array $params = [])
+    {
+        return $this->cache(sprintf($this->endpointPath, $parent), $params);
+    }
+
     public function _show($id, array $params = [])
     {
         return $this->cache('%s/' .$id, $params);
@@ -230,6 +235,12 @@ class API extends Model
         return $this->execute(null, $params, 'post');
     }
 
+    public function _childStore($parent, array $params = [])
+    {
+        return $this->execute(sprintf($this->endpointPath, $parent), $params, 'post');
+    }
+
+
     public function _delete($id, array $params = [])
     {
         return $this->execute('%s/' .$id, $params, 'delete');
@@ -241,6 +252,13 @@ class API extends Model
         {
             return $this->flush(lcfirst(substr($method, 5)), ...$parameters);
         }
+        if (substr($method, 0, 3) == 'api') {
+            if(isset($this->parent) && method_exists($this, '_child' . ucfirst(substr($method, 3))))
+            {
+                return $this->{'_child' . ucfirst(substr($method, 3))}(...$parameters);
+            }
+            return $this->{'_' . substr($method, 3)}(...$parameters);
+        }
         return parent::__call($method, $parameters);
     }
 
@@ -248,7 +266,7 @@ class API extends Model
     {
         if (substr($method, 0, 3) == 'api') {
             $clone = new static;
-            return $clone->{'_'.substr($method, 3)}(...$parameters);
+            return $clone->{$method}(...$parameters);
         }
         return parent::__callStatic($method, $parameters);
     }

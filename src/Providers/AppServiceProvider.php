@@ -18,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $breadcrumbs = config('breadcrumbs.files', [base_path('routes/breadcrumbs.php')]);
         Config::set('breadcrumbs.files', array_merge($breadcrumbs, [join(DIRECTORY_SEPARATOR, [__DIR__, '..', 'routes', 'breadcrumbs.php'])]));
+        $this->mergeConfigFrom(join(DIRECTORY_SEPARATOR, [__DIR__, '..', 'config', 'users.php']), 'users');
     }
 
     /**
