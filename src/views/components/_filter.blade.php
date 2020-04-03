@@ -7,9 +7,9 @@
     </button>
     @if (is_array($allowedFilter))
         <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item fs-12 {{!app('request')->$key ? 'active' : ''}}" href="{{app('request')->create($model->url($model->currentPage()), 'GET', [$key => null])->getUri()}}">{{__("All Items")}}</a>
+                <a class="dropdown-item fs-12 {{!request()->$key ? 'active' : ''}}" href="{{request()->create($model->url($model->currentPage()), 'GET', [$key => null])->getUri()}}">{{__("All Items")}}</a>
             @foreach ($model->response('meta')->filters->allowed->$key as $item)
-                <a class="dropdown-item fs-12 {{app('request')->$key == $item ? 'active' : ''}}" href="{{app('request')->create($model->url($model->currentPage()), 'GET', [$key => $item])->getUri()}}">{{__(ucfirst($item))}}</a>
+                <a class="dropdown-item fs-12 {{request()->$key == $item ? 'active' : ''}}" href="{{request()->create($model->url($model->currentPage()), 'GET', [$key => $item])->getUri()}}">{{__(ucfirst($item))}}</a>
             @endforeach
         </div>
     @elseif(substr($allowedFilter, 0, 1) == '$')

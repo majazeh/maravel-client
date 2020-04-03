@@ -8,6 +8,7 @@ use App\Models\ApiResponse;
 use App\Models\ApiCollection;
 use App\Models\ApiPaginator;
 use Closure;
+use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\UploadedFile;
 use Route;
 
@@ -20,6 +21,7 @@ class API extends Model
 
     public function __construct(array $attributes = [], ApiResponse $response = null)
     {
+        $this->casts['id'] = 'string';
         if(!empty($attributes))
         {
             foreach (['index', 'show', 'edit', 'create', 'delete', 'update', 'store'] as $value) {
@@ -287,7 +289,11 @@ class API extends Model
 
     public function can($action)
     {
-        return in_array($action, $this->can ?: []);
+        if(key_exists($action, (array) $this->can))
+        {
+            return ((array) $this->can)[$action];
+        }
+        return in_array($action, (array) $this->can ?: []);
     }
     public function check($action)
     {

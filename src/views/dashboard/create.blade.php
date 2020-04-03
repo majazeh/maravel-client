@@ -6,9 +6,10 @@
             <div class="card">
                 <div class="card-header">
                     {{__(($module->action == 'create' ? "Create " : 'Edit ') . Str::singular($module->name))}}
+                    @yield('content-header')
                 </div>
                 @yield('before_content')
-                <form class="" action="@yield('form_action', isset(${$module->result}) ? ${$module->result}->route('update') : route("$module->resource.store", $module->parent ? request()->route()->parameters[$module->parent] : null))" method="POST">
+                <form class="" action="@yield('form_action', request()->create(isset(${$module->result}) ? ${$module->result}->route('update') : route("$module->resource.store", ($module->parent ? request()->route()->parameters[$module->parent] : null)), 'GET', request()->all())->getUri())" method="POST">
                     @csrf
                     <input type="hidden" name="_method" value="{{$module->action == 'edit' ? 'PUT' : 'POST'}}">
                     <div class="card-body">

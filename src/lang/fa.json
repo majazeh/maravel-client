@@ -60,5 +60,8 @@
     "Supservisor profile": "پروفایل کاربر سیستمی",
     "Save avatar": "ویرایش آواتار",
     "System" : "سیستم",
-    "Owner" : "مالک"
+    "Owner" : "مالک",
+    "Empty content Error" : "محتوایی برای نمایش وجود ندارد!",
+    "Edit user-me" : "ویرایش من",
+    "Update user-me": "ویرایش من"
 }

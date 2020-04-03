@@ -38,7 +38,12 @@ class _UserController extends Controller
     }
     public function update(Request $request, $user)
     {
-        return User::apiUpdate($user, $request->except('_method'))->response()->json(['redirect' => route('dashboard.users.edit', $user)]);
+        return User::apiUpdate($user, $request->except('_method'))->response()->json([
+            'redirect' => route('dashboard.users.edit', [
+                'user' => $user,
+                'userview' => $request->userview
+                ])
+            ]);
     }
 
     public function show(Request $request, User $user)
@@ -49,8 +54,14 @@ class _UserController extends Controller
 
     public function me(Request $request)
     {
-        $this->data['user'] = User::me();
-        return $this->view($request);
+        $this->data->user = User::me();
+        return $this->view($request, 'dashboard.users.show');
+    }
+    public function editMe(Request $request)
+    {
+        $this->data->user = User::me();
+        $this->data->module->result = 'user';
+        return $this->view($request, 'dashboard.users.create');
     }
 
 }

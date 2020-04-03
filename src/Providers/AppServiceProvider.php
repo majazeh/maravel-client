@@ -2,6 +2,7 @@
 
 namespace Maravel\Providers;
 
+use Illuminate\Auth\RequestGuard;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
@@ -28,6 +29,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        RequestGuard::macro('isAdmin', function(){
+            return in_array($this->user->type, config('users.admins', []));
+        });
         Config::set('auth.defaults.guard', 'cookie');
         Config::set('auth.guards.cookie', [
             'driver' => 'cookie',

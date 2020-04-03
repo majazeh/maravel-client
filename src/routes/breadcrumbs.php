@@ -15,6 +15,14 @@ Breadcrumbs::for('dashboard.users.show', function ($trail, $data) {
     $trail->parent('dashboard.users.index', $data);
     $trail->push($data['user']->name ?: __('Anonymouse'), route('dashboard.users.show', $data['user']->id));
 });
+Breadcrumbs::for('dashboard.users.me', function ($trail, $data) {
+    $trail->parent('dashboard.home', $data);
+    $trail->push(__('Me'), route('dashboard.users.me'));
+});
+Breadcrumbs::for('dashboard.users.me.edit', function ($trail, $data) {
+    $trail->parent('dashboard.users.me', $data);
+    $trail->push(__('Edit'), route('dashboard.users.me.edit'));
+});
 
 Breadcrumbs::for('dashboard.users.edit', function ($trail, $data) {
     $trail->parent('dashboard.users.show', $data);
