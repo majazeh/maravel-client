@@ -6,7 +6,7 @@
                 @if (Breadcrumbs::exists(\Route::getCurrentRoute()->getAction('as')))
                     {{ Breadcrumbs::render(\Route::getCurrentRoute()->getAction('as'), get_defined_vars()) }}
                 @endif
-                @if((!Gate::has("$module->resource.create") || Gate::allows("$module->resource.create")) && Route::has("$module->resource.create") && \Route::getCurrentRoute()->getAction('as') != "$module->resource.create")
+                @if((!Gate::has("$module->resource.create") || Gate::allows("$module->resource.create", $module->parent ? ${$module->parent} : null)) && Route::has("$module->resource.create") && \Route::getCurrentRoute()->getAction('as') != "$module->resource.create")
                     <a href="{{route("$module->resource.create", $module->parent ? request()->route()->parameters[$module->parent] : null)}}" class="badge badge-success mx-2">{{__("Create new " . Str::singular($module->name))}}</a>
                 @endif
             </div>

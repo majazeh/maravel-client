@@ -49,13 +49,18 @@ class _UserController extends Controller
     public function show(Request $request, User $user)
     {
         $this->data->user = $user;
+        $method_name = \Str::camel('show_' . $user->type);
+        if(\method_exists($this, $method_name))
+        {
+            $this->{$method_name}(...func_get_args());
+        }
         return $this->view($request, 'dashboard.users.show');
     }
 
     public function me(Request $request)
     {
-        $this->data->user = User::me();
-        return $this->view($request, 'dashboard.users.show');
+        User::$me = null;
+        return $this->show($request, User::me());
     }
     public function editMe(Request $request)
     {

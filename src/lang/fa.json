@@ -63,5 +63,6 @@
     "Owner" : "مالک",
     "Empty content Error" : "محتوایی برای نمایش وجود ندارد!",
     "Edit user-me" : "ویرایش من",
-    "Update user-me": "ویرایش من"
+    "Update user-me": "ویرایش من",
+    "profile :name" : "پروفایل :name"
 }

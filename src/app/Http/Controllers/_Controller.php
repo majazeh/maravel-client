@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use stdClass;
 use Str;
+use Illuminate\Contracts\View\Factory as ViewFactory;
 
 class _Controller extends BaseController
 {
@@ -55,7 +56,14 @@ class _Controller extends BaseController
         {
             return $this->data->result;
         }
-        $view = response(view($view, (array) $this->data));
+        try {
+            $view = response(view($view, (array) $this->data));
+        } catch (\Throwable $th) {
+            if(method_exists($th, 'getPrevious') && $th->getPrevious()){
+                throw $th->getPrevious();
+            }
+            throw $th;
+        }
         if($request->ajax())
         {
             $content = $view->getContent();

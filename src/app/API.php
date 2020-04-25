@@ -14,7 +14,7 @@ use Route;
 
 class API extends Model
 {
-    protected $endpointPath, $route, $can, $response, $endpoint;
+    protected $endpointPath, $route, $can, $allows, $response, $endpoint;
     protected static $_cache = [];
     public $filterWith, $with = [], $fake = false;
     protected $guarded = [];
@@ -36,13 +36,20 @@ class API extends Model
             $this->can = $attributes['can'];
             unset($attributes['can']);
         }
+        if (isset($attributes['allows'])) {
+            $this->allows = $attributes['allows'];
+            unset($attributes['allows']);
+        }
         if($attributes && !empty($this->with))
         {
             foreach ($attributes as $key => $value) {
                 if(key_exists($key, $this->with) && key_exists($key, $attributes))
                 {
                     $model = $this->with[$key];
-                    if(method_exists($model, 'resource'))
+                    if(!$value){
+                        $value = null;
+                    }
+                    elseif(method_exists($model, 'resource'))
                     {
                         $value = $model::resource($value);
                     }
@@ -101,15 +108,7 @@ class API extends Model
         $method = strtoupper($method);
         $this->endpoint = $pure_url = static::path() . trim($endpoint, '\/');
         if ($method == 'GET' && !empty($data)) {
-            $parse_url = parse_url($pure_url);
-
-            $parse_url['query'] = isset($parse_url['query']) ? $parse_url['query'] . '&' . http_build_query($data) : http_build_query($data);
-            $this->endpoint = $parse_url['scheme']
-                . '://'
-                . $parse_url['host']
-                . (isset($parse_url['port']) ? ':' . $parse_url['port'] : '')
-                . (isset($parse_url['path']) ? $parse_url['path'] : '/')
-                . (isset($parse_url['query']) ? '?' . $parse_url['query'] : '');
+            $this->endpoint = request()->create($pure_url, 'GET', $data)->getUri();
         }
         return $this->endpoint;
     }
@@ -248,6 +247,22 @@ class API extends Model
         return $this->execute('%s/' .$id, $params, 'delete');
     }
 
+    public function _allows($abilities, array $parameters = [])
+    {
+        try
+        {
+            $this->execute('gate/allows/'. $this->getTable(), [
+                'abilities' => $abilities,
+                'parameters' => $parameters
+            ]);
+            return true;
+        }
+        catch(\Exception $e)
+        {
+            return false;
+        }
+    }
+
     public function __call($method, $parameters)
     {
         if(substr($method, 0, 5) == 'flush')
@@ -293,8 +308,24 @@ class API extends Model
         {
             return ((array) $this->can)[$action];
         }
-        return in_array($action, (array) $this->can ?: []);
+        foreach ((array) $this->can as $key => $value) {
+            if($value === $action)
+            {
+                return true;
+            }
+        }
+        return false;
     }
+
+    public function allows($key = null)
+    {
+        if(isset($this->allows->$key))
+        {
+            return $this->allows->$key;
+        }
+        return null;
+    }
+
     public function check($action)
     {
         if(!$this->can($action)){

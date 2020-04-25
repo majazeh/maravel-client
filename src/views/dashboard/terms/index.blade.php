@@ -34,9 +34,11 @@
                                     {{ $term->title }}
                                 </td>
                                 <td>
-                                    @foreach ($term->parents as $parent)
-                                        <a href="{{ route('dashboard.terms.show', ['term' => $parent]) }}"  class="badge badge-secondary">{{ $parent->title }}</a>
-                                    @endforeach
+                                    @if ($term->parents)
+                                        @foreach ($term->parents as $parent)
+                                            <a href="{{ route('dashboard.terms.show', ['term' => $parent]) }}"  class="badge badge-secondary">{{ $parent->title }}</a>
+                                        @endforeach
+                                    @endif
                                 </td>
                                 <td>
                                     <a href="{{route('dashboard.users.show', $term->creator->id)}}">{{ $term->creator->name ?: $term->creator->id }}</a>
