@@ -115,8 +115,8 @@ class _AuthController extends Controller
         $request->session()->forget('APIToken');
         $request->session()->forget('User');
         $logout = (new User)->execute('logout', [], 'post');
-        return response()->json(array_merge_recursive($logout->response()->toArray(), [
-            'redirect' => '/dashboard',
+        return response()->json(array_merge($logout->response()->toArray(), [
+            'redirect' => route('auth'),
             'direct' => true
         ]))
         ->withCookie(new Cookie('token', null));

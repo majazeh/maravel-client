@@ -11,7 +11,7 @@
     @if (auth()->check())
         <a href="{{route('dashboard.home')}}" class="text-light text-decoration-none fs-14 font-weight-bold direct">{{__('Dashboard')}}</a>
             <span class="px-2 text-white">|</span>
-        <a href="{{route('logout')}}" class="text-light text-decoration-none fs-14">{{__('Logout')}}</a>
+        <a href="{{route('logout')}}" data-lijax="click" data-method="POST" class="text-light text-decoration-none fs-14">{{__('Logout')}}</a>
     @else
         <a href="{{route('auth.recovery')}}" class="text-light text-decoration-none fs-14">{{__('Forgot Password')}}</a>
         @if (config('auth.registration', true))
