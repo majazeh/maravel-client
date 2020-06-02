@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="row justify-content-center">
-        <div class="col-12 col-sm-8 col-md-8 col-lg-6 col-xl-4">
+        <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-6">
             <div class="card">
                 <div class="card-header">
                     {{__(($module->action == 'create' ? "Create " : 'Edit ') . Str::singular($module->name))}}
