@@ -97,6 +97,10 @@ class AppServiceProvider extends ServiceProvider
             return "<?php echo text2summary($content);?>";
         });
 
+        Blade::directive('avatarOrName', function ($user) {
+            return "<?php echo \$__env->make('components._avatarOrName', ['_userAvatar'=> $user], [\Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path'])])->render(); ?>";
+        });
+
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 join(DIRECTORY_SEPARATOR, [__DIR__, '..', '..', 'assets']) => base_path()

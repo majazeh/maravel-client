@@ -7,7 +7,7 @@
                 <div class="media media-xl rounded-circle">
                     <input type="file" class="hide-input input-avatar" id="avatar" name="avatar">
                     <label for="avatar" class="m-0">
-                        <img src="{{$user->avatar_url->url('small')}}" alt="">
+                        <img src="{{$user->avatar_url->url('small')}}" alt="{{__('Avatar')}}">
                     </label>
                 </div>
             </div>
