@@ -24,5 +24,5 @@
 
     <script src="@staticVersion('/js/sarkoot.min.js')"></script>
 
-    <script src="@staticVersion('js/app.js')"></script>
+    <script src="@staticVersion('/js/app.js')"></script>
 @endsection

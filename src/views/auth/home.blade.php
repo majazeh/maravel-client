@@ -1,6 +1,6 @@
 @section('auth-form')
 <div class="form-group">
-    <input type="text" class="form-control" id="authorized_key" name="authorized_key" value="{{app('request')->authorized_key}}" placeholder="{{auth()->check() ? __('Entry Command') : __('Phone, Email or Username')}}">
+    <input type="text" class="form-control text-left direction-ltr placeholder-right" id="authorized_key" name="authorized_key" value="{{app('request')->authorized_key}}" placeholder="{{auth()->check() ? __('Entry Command') : __('Phone, Email or Username')}}">
 </div>
 
 <button class="btn btn-dark btn-block btn-login mb-3">{{auth()->check() ? __('Check') : __('Enter')}}</button>

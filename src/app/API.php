@@ -125,10 +125,9 @@ class API extends Model
             'Accept: application/json',
             'charset: utf-8'
         );
-        if(User::$token)
+        if(User::token() && auth()->check())
         {
-
-            $headers[] = 'Authorization: Bearer ' . User::$token;
+            $headers[] = 'Authorization: Bearer ' . User::token();
         }
         $curl = curl_init($endpoint);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, strtoupper($method));

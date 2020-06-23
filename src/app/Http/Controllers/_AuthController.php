@@ -83,6 +83,7 @@ class _AuthController extends Controller
 
     public function authParse($auth, $request)
     {
+
         $theory = [];
         $key = null;
         if ($auth->response('theory')) {
@@ -101,6 +102,7 @@ class _AuthController extends Controller
                 : route('dashboard.home'),
             'direct' => $auth->response('theory') || $auth->response('callback') ? false : true
         ];
+        $response['is_ok'] = true;
         if ($auth->response('token')) {
             $response['message'] = __('Welcome :*');
             $response['message_text'] = __('Welcome :*');
@@ -108,13 +110,18 @@ class _AuthController extends Controller
             $request->session()->put('User', $auth->response()->toArray());
 
         }
+        $theoryMethod = 'authTheory' . ucfirst(\Str::camel($auth->response('theory')));
+        if(method_exists($this, $theoryMethod) && $auth->response('theory'))
+        {
+            $response = $this->$theoryMethod($request, $auth, $response);
+        }
         return $response;
     }
     public function logout(Request $request)
     {
+        $logout = (new User)->execute('logout', [], 'post');
         $request->session()->forget('APIToken');
         $request->session()->forget('User');
-        $logout = (new User)->execute('logout', [], 'post');
         return response()->json(array_merge($logout->response()->toArray(), [
             'redirect' => route('auth'),
             'direct' => true

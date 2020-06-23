@@ -24,6 +24,7 @@ class _Controller extends BaseController
         $this->data->module = $module = new stdClass;
         $global->description = 'Description';
         $global->title = 'Title';
+        $global->page = str_replace('.', '-', $request->route()->getAction('as'));
         $data->ajax = $request->ajax();
 
         $as = $request->route()->getAction('as');
