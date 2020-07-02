@@ -27,7 +27,7 @@ class API extends Model
             foreach (['index', 'show', 'edit', 'create', 'delete', 'update', 'store'] as $value) {
                 $route = 'dashboard.' . $this->getTable() . '.' . $value;
                 if(Route::has($route)){
-                    $this->route[$value] = route($route, !in_array($value, ['index', 'create', 'store']) ? [Str::singular($this->getTable()) => $attributes['id']] : null);
+                    $this->route[$value] = urldecode(route($route, !in_array($value, ['index', 'create', 'store']) ? [Str::singular($this->getTable()) => $attributes['id']] : null));
                 }
             }
         }
