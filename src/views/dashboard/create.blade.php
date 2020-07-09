@@ -5,7 +5,7 @@
         <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-6">
             <div class="card">
                 <div class="card-header">
-                    {{__(($module->action == 'create' ? "Create " : 'Edit ') . Str::singular($module->name))}}
+                    {{__(($module->action == 'create' ? "Create " : 'Edit ') . Str::singular($module->result))}}
                     @yield('content-header')
                 </div>
                 @yield('before_content')
@@ -18,7 +18,7 @@
                         </div>
                         <div class="card-footer">
                             <button type="submit" class="btn {{$module->action == 'edit' ? 'btn-primary' : 'btn-success' }}">
-                                {{__(($module->action == 'create' ? 'Create ' : 'Update ' ) . Str::singular($module->name))}}
+                                {{__(($module->action == 'create' ? 'Create ' : 'Update ' ) . Str::singular($module->result))}}
                             </button>
                             @if(Route::has($module->resource . '.index'))
                                 <a href="{{route($module->resource . '.index', $module->parent ? request()->route()->parameters[$module->parent] : null)}}" class="btn btn-light">{{ __('Cancel') }}</a>
@@ -27,6 +27,8 @@
                     </form>
                 @show
             </div>
+            @yield('other-card')
         </div>
+        @yield('other-content')
     </div>
 @endsection

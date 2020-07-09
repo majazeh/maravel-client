@@ -25,4 +25,8 @@ class ApiPaginator extends LengthAwarePaginator
     {
         return $text ? $this->response('messageText') : $this->response('message');
     }
+    public function getFilter($name)
+    {
+        return $this->response('meta') && isset($this->response('meta')->filters) && $this->response('meta')->filters->current && $this->response('meta')->filters->current->$name ? $this->response('meta')->filters->current->$name : null;
+    }
 }
