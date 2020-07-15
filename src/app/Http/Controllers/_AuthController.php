@@ -22,23 +22,46 @@ class _AuthController extends Controller
             'popper'
         ]);
     }
-    public function authForm(Request $request)
+    public function authForm(Request $request, $method = 'home')
     {
-
         $this->data->theoryRouteParms = [];
-        if($request->session()->previousUrl())
+        if($request->session()->previousUrl() != url()->current() || $request->previousUrl)
         {
-            $this->data->theoryRouteParms['previousUrl'] = $request->session()->previousUrl();
+            $this->data->theoryRouteParms['previousUrl'] = $request->previousUrl ?: $request->session()->previousUrl();
         }
         if ($request->callback) {
             $this->data->theoryRouteParms['callback'] = $request->callback;
 
         }
-        return $this->view($request, 'auth.home');
+        return $this->view($request, "auth.$method");
     }
+
+    public function registerForm(Request $request){
+        if(auth()->check()){
+            return redirect()->route('dashboard.home');
+        }
+        return $this->authForm($request, 'register');
+    }
+
+    public function recoveryForm(Request $request)
+    {
+        if (auth()->check()) {
+            return redirect()->route('dashboard.home');
+        }
+        return $this->authForm($request, 'recovery');
+    }
+
     public function auth(Request $request)
     {
         return $this->authParse(User::auth($request->all()), $request);
+    }
+    public function register(Request $request)
+    {
+        return $this->authParse(User::register($request->all()), $request);
+    }
+    public function recovery(Request $request)
+    {
+        return $this->authParse(User::recovery($request->all()), $request);
     }
 
     public function authTheoryForm(Request $request, $key)

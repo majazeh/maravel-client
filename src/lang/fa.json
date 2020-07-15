@@ -64,5 +64,10 @@
     "Empty content Error" : "محتوایی برای نمایش وجود ندارد!",
     "Edit user-me" : "ویرایش من",
     "Update user-me": "ویرایش من",
-    "profile :name" : "پروفایل :name"
+    "profile :name" : "پروفایل :name",
+    "DisplayName" : "نام و نام خانوادگی",
+    "Check" : "بررسی",
+    "Code" : "کد",
+    "Receive code" : "دریافت کد",
+    "Change password" : "تغییر کلمه عبور"
 }

@@ -1,11 +1,17 @@
 @section('auth-form')
 <div class="form-group">
-    <input type="text" class="form-control text-left direction-ltr placeholder-right" id="authorized_key" name="authorized_key" value="{{app('request')->authorized_key}}" placeholder="{{auth()->check() ? __('Entry Command') : __('Phone, Email or Username')}}">
+    <input type="text" class="form-control" id="name" name="name" placeholder="{{__('DisplayName')}}">
 </div>
 
-<button class="btn btn-dark btn-block btn-login mb-3">{{auth()->check() ? __('Check') : __('Enter')}}</button>
-@endsection
+<div class="form-group">
+    <input type="text" class="form-control" id="mobile" name="mobile" placeholder="{{__('Mobile')}}">
+</div>
 
+<div class="form-group">
+    <input type="password" class="form-control" id="password" name="password" placeholder="{{__('Password')}}">
+</div>
+<button class="btn btn-dark btn-block btn-login mb-3">{{__('Register')}}</button>
+@endsection
 @section('auth-nav')
 <div class="d-flex justify-content-center">
     @if (auth()->check())
@@ -13,12 +19,10 @@
             <span class="px-2 text-white">|</span>
         <a href="{{route('logout')}}" data-lijax="click" data-method="POST" class="text-light text-decoration-none fs-14">{{__('Logout')}}</a>
     @else
-        @if (config('auth.registration', true))
-            <a href="{{route('register')}}" class="text-light text-decoration-none font-weight-bold fs-14">{{__('Register')}}</a>
-        @endif
+        <a href="{{route('auth')}}" class="text-light text-decoration-none font-weight-bold fs-14">{{__('Login')}}</a>
         <span class="px-2 text-white">|</span>
         <a href="{{route('auth.recovery')}}" class="text-light text-decoration-none fs-14">{{__('Forgot Password')}}</a>
     @endif
 </div>
 @endsection
-@extends($ajax ? 'auth.xhr' : 'auth.app')
+@extends('auth.theory')
