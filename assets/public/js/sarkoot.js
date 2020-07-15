@@ -970,11 +970,13 @@ $(document).on('statio:global:renderResponse', function (event, base, context) {
 		});
 		$('.date-picker', this).each(function(){
 			var val = $(this).val();
+			var _self = this;
 			$(this).persianDatepicker({
 				format: $(this).attr('data-picker-format') || "YYYY/M/D H:m",
 				minDate: $(this).attr('data-picker-minDate') * 1000,
 				maxDate: $(this).attr('data-picker-maxDate') * 1000,
 				altFieldFormatter : function (unix) {
+					$('#' + $(_self).attr('data-picker-alt')).trigger('change', [_self, unix]);
 					return unix / 1000;
 				},
 				altFormat: "unix",

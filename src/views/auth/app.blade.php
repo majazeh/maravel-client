@@ -11,7 +11,7 @@
                                 @if (auth()->check() && auth()->user()->avatar_url->url('large'))
                                     <img src="{{auth()->user()->avatar_url->url('large')}}" alt="Avatar">
                                 @else
-                                    <img src="images/logo/logo.svg" alt="Logo">
+                                    <img src="/images/logo/logo.svg" alt="Logo">
                                 @endif
                             </a>
                         </div>

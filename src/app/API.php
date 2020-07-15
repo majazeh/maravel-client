@@ -7,6 +7,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use App\Models\ApiResponse;
 use App\Models\ApiCollection;
 use App\Models\ApiPaginator;
+use Carbon\Carbon;
 use Closure;
 use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\UploadedFile;
@@ -343,5 +344,9 @@ class API extends Model
     public function resolveRouteBinding($value, $filed = null)
     {
         return $this->_show($value);
+    }
+
+    public function fromUTCToTimezone($time){
+        return Carbon::createFromTimeString($time, 'UTC')->setTimezone(config('app.timezone'));
     }
 }
