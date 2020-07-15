@@ -70,5 +70,10 @@
     "Code" : "کد",
     "Receive code" : "دریافت کد",
     "Change password" : "تغییر کلمه عبور",
-    "Entry Command" : "دستور ورودی"
+    "Entry Command" : "دستور ورودی",
+    "Auth" : "ورود",
+    "Recovery" : "فراموشی کلمه عبور",
+    "Auth theory recovery" : "بازیابی کلمه عبور",
+    "Auth theory mobileCode" : "تأیید کد موبایل",
+    "Auth theory password": "بررسی کلمه عبور"
 }

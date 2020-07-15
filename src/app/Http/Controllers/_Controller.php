@@ -23,7 +23,6 @@ class _Controller extends BaseController
         $this->data->layouts->vendor = new Dynamic;
         $this->data->module = $module = new stdClass;
         $global->description = 'Description';
-        $global->title = 'Title';
         $global->page = str_replace('.', '-', $request->route()->getAction('as'));
         $data->ajax = $request->ajax();
 
@@ -42,6 +41,8 @@ class _Controller extends BaseController
 
         $module->name = $module->parent ? $module->parent . '-' . $name : $name;
         $module->result = $module->action == 'index' ? $name : Str::singular($name);
+        $global->title = __(ucfirst($module->result));
+
     }
 
     public function view(Request $request, $view, $data = [])

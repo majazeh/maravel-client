@@ -37,6 +37,7 @@ class _AuthController extends Controller
     }
 
     public function registerForm(Request $request){
+        $this->data->global->title = __('Register');
         if(auth()->check()){
             return redirect()->route('dashboard.home');
         }
@@ -45,6 +46,7 @@ class _AuthController extends Controller
 
     public function recoveryForm(Request $request)
     {
+        $this->data->global->title = __('Recovery');
         if (auth()->check()) {
             return redirect()->route('dashboard.home');
         }
@@ -66,6 +68,7 @@ class _AuthController extends Controller
 
     public function authTheoryForm(Request $request, $key)
     {
+        $this->data->global->title = __('Auth theory '. $request->form);
         $form = $request->form != 'auth' || $request->user() ? '.' . $request->form : '';
         if ($form == '.auth') {
             try {
