@@ -24,9 +24,15 @@ class _AuthController extends Controller
     }
     public function authForm(Request $request)
     {
+
         $this->data->theoryRouteParms = [];
+        if($request->session()->previousUrl())
+        {
+            $this->data->theoryRouteParms['previousUrl'] = $request->session()->previousUrl();
+        }
         if ($request->callback) {
             $this->data->theoryRouteParms['callback'] = $request->callback;
+
         }
         return $this->view($request, 'auth.home');
     }
@@ -52,6 +58,9 @@ class _AuthController extends Controller
         if($request->callback)
         {
             $this->data->theoryRouteParms['callback'] = $request->callback;
+        }
+        if ($request->previousUrl) {
+            $this->data->theoryRouteParms['previousUrl'] = $request->previousUrl;
         }
         return $this->view($request, 'auth.theory' . $form);
     }
@@ -95,11 +104,15 @@ class _AuthController extends Controller
         if ($auth->response('key')) {
             $theory['key'] = $auth->response('key');
         }
+        if($request->previousUrl){
+            $theory['previousUrl'] = $request->previousUrl;
+
+        }
         $response = [];
         $response = [
             'redirect' => $auth->response('theory') || $auth->response('callback')
-                ? $auth->response('theory') == 'auth' && !$auth->response('key') ? route('auth', ['callback' => $auth->response('callback')]) : route('auth.theory', $theory)
-                : route('dashboard.home'),
+                ? ($auth->response('theory') == 'auth' && !$auth->response('key') ? route('auth', ['callback' => $auth->response('callback')]) : route('auth.theory', $theory))
+                : ($request->previousUrl ?: route('dashboard.home')),
             'direct' => $auth->response('theory') || $auth->response('callback') ? false : true
         ];
         $response['is_ok'] = true;
