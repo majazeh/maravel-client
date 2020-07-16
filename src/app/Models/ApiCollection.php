@@ -5,11 +5,15 @@ use Illuminate\Support\Collection;
 
 class ApiCollection extends Collection
 {
-    public $response;
-    public function __construct(ApiResponse $response, ...$args)
+    public function __construct($response, ...$args)
     {
+        if($response instanceof ApiResponse){
+            $this->response = $response;
+        }
+        else{
+            array_unshift($args, $response);
+        }
         parent::__construct(...$args);
-        $this->response = $response;
     }
     public function response($key = null)
     {

@@ -41,6 +41,7 @@ class _Controller extends BaseController
 
         $module->name = $module->parent ? $module->parent . '-' . $name : $name;
         $module->result = $module->action == 'index' ? $name : Str::singular($name);
+        $module->singular = Str::singular($module->result);
         $global->title = __(ucfirst($module->result));
 
     }

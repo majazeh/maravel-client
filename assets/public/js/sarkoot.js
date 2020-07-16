@@ -894,7 +894,7 @@ $(document).ready(function(){
 })
 
 $(document).ready(function () {
-	if (i18n && window.lang && window.lang[$('html').attr('lang')])
+	if (window['i18n'] && window.lang && window.lang[$('html').attr('lang')])
 	{
 		i18n.translator.add(window.lang[$('html').attr('lang')]);
 	}

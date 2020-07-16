@@ -73,9 +73,9 @@ class _AuthController extends Controller
         if ($form == '.auth') {
             try {
                 $auth = User::authTheory($key);
-                $this->data['message'] = $auth->message_text;
+                $this->data->message = $auth->response('message_text');
             } catch (APIException $e) {
-                $this->data['message'] = $e->message_text;
+                $this->data->message = $auth->response('message_text');
             }
         }
         $this->data->theoryRouteParms = [
@@ -153,6 +153,12 @@ class _AuthController extends Controller
         if(method_exists($this, $theoryMethod) && $auth->response('theory'))
         {
             $response = $this->$theoryMethod($request, $auth, $response);
+        }
+        return $response;
+    }
+    public function authTheoryAuth($request, $auth, $response){
+        if($auth->response('key')){
+            return $this->authTheory(request(), $auth->response('key'));
         }
         return $response;
     }

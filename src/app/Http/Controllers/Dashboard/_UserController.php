@@ -28,7 +28,9 @@ class _UserController extends Controller
     public function avatarStore(Request $request, $user)
     {
         $avatar = new User;
-        return $avatar->execute("%s/$user/avatar", $request->all('avatar'), 'POST')->response()->json();
+        $reesponse = $avatar->execute("%s/$user/avatar", $request->all('avatar'), 'POST');
+        $request->session()->put('User', (new User)->execute("me")->response()->toArray());
+        return $reesponse->response()->json();
     }
 
     public function edit(Request $request, User $user)
@@ -38,7 +40,9 @@ class _UserController extends Controller
     }
     public function update(Request $request, $user)
     {
-        return User::apiUpdate($user, $request->except('_method'))->response()->json([
+        $reesponse = User::apiUpdate($user, $request->except('_method'));
+        $request->session()->put('User', (new User)->execute("me")->response()->toArray());
+        return $reesponse->response()->json([
             'redirect' => route('dashboard.users.edit', [
                 'user' => $user,
                 'userview' => $request->userview
