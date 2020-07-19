@@ -75,5 +75,11 @@
     "Recovery" : "فراموشی کلمه عبور",
     "Auth theory recovery" : "بازیابی کلمه عبور",
     "Auth theory mobileCode" : "تأیید کد موبایل",
-    "Auth theory password": "بررسی کلمه عبور"
+    "Auth theory password": "بررسی کلمه عبور",
+    "Edit me" : "ویرایش من",
+    "Basic" : "پایه",
+    "Personal" : "شخصی",
+    "Avatar" : "تصویر نمایشی",
+    "New password" : "کلمه عبور جدید",
+    "Current password": "کلمه عبور فعلی"
 }

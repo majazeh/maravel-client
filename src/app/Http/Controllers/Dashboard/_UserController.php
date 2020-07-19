@@ -50,6 +50,10 @@ class _UserController extends Controller
             ]);
     }
 
+    public function changePassword(Request $request, User $user){
+        return (new User)->execute('%s/' . $user->id . '/change-password', $request->all(), 'PUT')->response()->json();
+    }
+
     public function show(Request $request, User $user)
     {
         $this->data->user = $user;

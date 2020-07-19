@@ -124,7 +124,8 @@ class API extends Model
         }
         $headers       = array(
             'Accept: application/json',
-            'charset: utf-8'
+            'charset: utf-8',
+            'accept-Language: ' . config('app.locale')
         );
         if(User::token() && auth()->check())
         {

@@ -940,7 +940,7 @@ $(document).on('statio:global:renderResponse', function (event, base, context) {
 			$('.invalid-feedback', this).remove();
 			if (d.errors) {
 				for (var id in d.errors) {
-					var elementBase = $('#' + id + ':not(.hide-input), [data-alias~=' + id + ']');
+					var elementBase = $('#' + id + ':not(.hide-input), [data-alias~=' + id + '], [name=' + id +']:not(.hide-input)', this);
 					elementBase.addClass('is-invalid');
 					if (elementBase.is('.form-control-m'))
 					{
