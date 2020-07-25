@@ -1,6 +1,12 @@
 @php
-    $tag = $model->route('show') ? 'a' : 'span';
-    $href = $tag == 'a' ? ' href="'.$model->route('show').'"' : '';
+    if (isset($model)) {
+        $tag = $model->route('show') ? 'a' : 'span';
+        $href = $tag == 'a' ? ' href="'.$model->route('show').'"' : '';
+    }
+    else{
+        $tag = isset($href) ? 'a' : 'span';
+        $href = isset($href) ? ' href="' . urldecode($href) . '"' : '';
+    }
 @endphp
 <{!!$tag.$href!!} class="d-none d-sm-inline">
     <span class="direction-ltr align-left d-inline-block font-weight-bold">{{$id[0]}}<span class="d-none d-lg-inline">-</span>{{$id[1]}}</span>
