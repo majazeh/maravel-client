@@ -14,4 +14,9 @@
             @include($layouts->asideMenue)
         </ul>
     </aside>
+    @if (config('app.debug'))
+        <div style="position: absolute; bottom: 0; right: 0;font-size: 8px;">
+            {{Carbon\Carbon::createFromTimestamp(session()->get('User_cacheed_at'))->format('H:i:s')}}
+        </div>
+    @endif
 @endsection

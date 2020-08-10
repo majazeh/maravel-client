@@ -9,7 +9,6 @@ use App\Models\ApiCollection;
 use App\Models\ApiPaginator;
 use Carbon\Carbon;
 use Closure;
-use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\UploadedFile;
 use Route;
 
@@ -17,7 +16,7 @@ class API extends Model
 {
     protected $endpointPath, $route, $can, $allows, $response, $endpoint;
     protected static $_cache = [];
-    public $filterWith, $with = [], $fake = false;
+    public $filterWith, $with = [], $fake = false, $parentModel, $filters;
     protected $guarded = [];
 
     public function __construct(array $attributes = [], ApiResponse $response = null)
@@ -116,6 +115,7 @@ class API extends Model
 
     public function execute($endpoint = null, array $data = [], $method = 'GET', Closure $callback = null)
     {
+
         $method = strtoupper($method);
         $endpoint = $this->endpoint(...func_get_args());
         if($this->fake)
@@ -127,11 +127,14 @@ class API extends Model
             'charset: utf-8',
             'accept-Language: ' . config('app.locale')
         );
-        if(User::token() && auth()->check())
+
+        if(User::token() && in_array('auth', request()->route()->getAction('middleware')))
         {
             $headers[] = 'Authorization: Bearer ' . User::token();
         }
+
         $curl = curl_init($endpoint);
+
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, strtoupper($method));
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         if($method != 'GET')
@@ -149,6 +152,15 @@ class API extends Model
                 }
             }
             if ($hasFile) {
+                foreach ($data as $key => $value) {
+                    if(is_array($value))
+                    {
+                        unset($data[$key]);
+                        foreach ($value as $k => $v) {
+                            $data[$key . "[$k]"] = $v;
+                        }
+                    }
+                }
                 $headers[] = 'Content-Type: multipart/form-data';
                 curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
             } else {
@@ -157,18 +169,25 @@ class API extends Model
             }
         }
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        $response     = new ApiResponse($curl, curl_exec($curl), [
-            'filterWith' => $this->filterWith
-        ]);
+        $response     = new ApiResponse($curl, curl_exec($curl));
         if (is_array($response->data))
         {
             $items = [];
+            if (isset($response->meta->parent)) {
+                $parentClass = $this->parent;
+                $parent = new $parentClass((array) $response->{$response->meta->parent});
+            }
             foreach ($response->data as $key => $value) {
-                $items[] = new static((array) $value);
+                $item = new static((array) $value);
+                if (isset($response->meta->parent)) {
+                    $item->parentModel = $parent;
+                }
+                $items[] = $item;
             }
             if($response->links)
             {
                 $paginator = new ApiPaginator($response, $items, $response->meta->total, $response->meta->per_page, $response->meta->current_page);
+                $paginator->loadFilters($this);
                 $path = app('request')->getSchemeAndHttpHost() . '/' . app('request')->path();
                 $paginator->withPath($path);
                 foreach ($paginator->response('meta')->filters->allowed as $key => $value) {
@@ -176,13 +195,25 @@ class API extends Model
                 }
                 $paginator->appends('order', app('request')->order);
                 $paginator->appends('sort', app('request')->sort);
+                if (isset($response->meta->parent)) {
+                    $paginator->parentModel = $parent;
+                }
                 return $paginator;
             }
             return new ApiCollection($response, $items);
         }
         else
         {
-            return new static((array) $response->data, $response);
+            if (isset($response->meta->parent)) {
+                $parentClass = $this->parent;
+                $parent = new $parentClass((array) $response->{$response->meta->parent});
+            }
+            $item = new static((array) $response->data, $response);
+
+            if (isset($response->meta->parent)) {
+                $item->parentModel = $parent;
+            }
+            return $item;
         }
 
         return $response;
@@ -349,5 +380,10 @@ class API extends Model
 
     public function fromUTCToTimezone($time){
         return Carbon::createFromTimeString($time, 'UTC')->setTimezone(config('app.timezone'));
+    }
+
+    public function setFilters($filters)
+    {
+        $this->filters = $filters;
     }
 }

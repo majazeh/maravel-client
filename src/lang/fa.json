@@ -37,7 +37,7 @@
     "Documents": "اسناد و مدارک",
     "View": "نمایش",
     "Title": "عنوان",
-    "Notic": "توضیحات",
+    "Notic": "یادداشت",
     "User": "کاربر",
     "Term": "دسته‌بندی",
     "Terms": "دسته‌بندی‌ها",
@@ -81,5 +81,6 @@
     "Personal" : "شخصی",
     "Avatar" : "تصویر نمایشی",
     "New password" : "کلمه عبور جدید",
-    "Current password": "کلمه عبور فعلی"
+    "Current password": "کلمه عبور فعلی",
+    "Description" : "توضیحات"
 }

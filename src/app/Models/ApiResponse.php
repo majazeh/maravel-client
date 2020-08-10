@@ -55,29 +55,6 @@ class ApiResponse implements Arrayable
         {
             throw new APIException($this);
         }
-        if(isset($options['filterWith']))
-        {
-            if(isset($this->response->meta->filters->current))
-            {
-                foreach ($this->response->meta->filters->current as $key => $value) {
-                    if(key_exists($key, $options['filterWith']))
-                    {
-                        $model = $options['filterWith'][$key];
-                        if (is_array($value)) {
-                            $value = (new $model)->newCollection(array_map(function ($data) use ($model) {
-                                $value = (new $model((array) $data));
-                                $value->isFilter = true;
-                                return $value;
-                            }, $value));
-                        } else {
-                            $value = new $model((array) $value);
-                            $value->isFilter = true;
-                        }
-                        $this->response->meta->filters->current->$key = $value;
-                    }
-                }
-            }
-        }
     }
 
     public function statusCode()

@@ -147,6 +147,7 @@ class _AuthController extends Controller
             $response['message_text'] = __('Welcome :*');
             $request->session()->put('APIToken', $auth->response('token'));
             $request->session()->put('User', $auth->response()->toArray());
+            $request->session()->put('User_cacheed_at', time());
 
         }
         $theoryMethod = 'authTheory' . ucfirst(\Str::camel($auth->response('theory')));
@@ -180,6 +181,9 @@ class _AuthController extends Controller
     }
     public function authBack(Request $request)
     {
+        $request->request->add([
+            'previousUrl' => $request->headers->get('referer')
+        ]);
         return $this->authParse(User::authBack(), $request);
     }
 }

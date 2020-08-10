@@ -5,11 +5,23 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class ApiPaginator extends LengthAwarePaginator
 {
-    public $response;
+    public $response, $filters = [];
     public function __construct(ApiResponse $response, ...$args)
     {
         parent::__construct(...$args);
         $this->response = $response;
+
+    }
+    public function loadFilters($model)
+    {
+        if ($this->response('meta') && isset($this->response('meta')->filters->current)) {
+            foreach ($this->response('meta')->filters->current as $key => $value) {
+                $this->filters[$key] = isset($model->filterWith[$key]) ? new $model->filterWith[$key]((array) $value) : $value;
+            }
+            foreach ($this as $key => $value) {
+                $value->setFilters($this->filters);
+            }
+        }
     }
     public function response($key = null)
     {
@@ -27,6 +39,6 @@ class ApiPaginator extends LengthAwarePaginator
     }
     public function getFilter($name)
     {
-        return $this->response('meta') && isset($this->response('meta')->filters) && $this->response('meta')->filters->current && $this->response('meta')->filters->current->$name ? $this->response('meta')->filters->current->$name : null;
+        return isset($this->filters[$name]) ? $this->filters[$name] : null;
     }
 }

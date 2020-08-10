@@ -100,6 +100,22 @@ class AppServiceProvider extends ServiceProvider
         Blade::directive('avatarOrName', function ($user) {
             return "<?php echo \$__env->make('components._avatarOrName', ['_userAvatar'=> $user], [\Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path'])])->render(); ?>";
         });
+        Blade::directive('time', function ($args) {
+            $args = explode(',', $args);
+            $size = 'md';
+            $time = $args[0];
+            if(isset($args[1]))
+            {
+                $args[1] = \str_replace(['"', "'", ' '], '', $args[1]);
+                $size = in_array($args[1], ['xs', 'sm', 'md', 'lg']) ? $args[1] : $size;
+            }
+            $class = '_time';
+            if(in_array(config('app.locale'), ['fa', 'fa_IR']))
+            {
+                $class = '_fa_time';
+            }
+            return "<?php echo \$__env->make('components.$class', ['_time'=> $time, 'size' => '$size'], [\Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path'])])->render(); ?>";
+        });
 
         if ($this->app->runningInConsole()) {
             $this->publishes([

@@ -24,7 +24,12 @@
 						message = res.errors[err][0];
 					}
 				}
-				iziToast[res.is_ok ? 'success' : 'error']({ message: message});
+				console.log($('body').is('.rtl'));
+				iziToast[res.is_ok ? 'show' : 'error']({
+					message: message,
+					rtl: $('body').is('.rtl'),
+					closeOnClick : true,
+				});
 			}
 		}
 		if(res.redirect)
@@ -942,14 +947,16 @@ $(document).on('statio:global:renderResponse', function (event, base, context) {
 				for (var id in d.errors) {
 					var elementBase = $('#' + id + ':not(.hide-input), [data-alias~=' + id + '], [name=' + id +']:not(.hide-input)', this);
 					elementBase.addClass('is-invalid');
-					if (elementBase.is('.form-control-m'))
-					{
-						$('<div class="invalid-feedback">' + d.errors[id][0] + '</div>').insertAfter(elementBase.next('label'));
-					}
-					else
-					{
-						$('<div class="invalid-feedback">' + d.errors[id][0] + '</div>').insertAfter(elementBase);
-					}
+					elementBase.each(function(){
+						if ($(this).is('.form-control-m'))
+						{
+							$('<div class="invalid-feedback">' + d.errors[id][0] + '</div>').insertAfter($(this).next('label'));
+						}
+						else
+						{
+							$('<div class="invalid-feedback">' + d.errors[id][0] + '</div>').insertAfter($(this));
+						}
+					});
 				}
 			}
 		});
@@ -1121,6 +1128,7 @@ function select2result_users(data, option)
 	{
 		var span = $('<div class="d-flex align-items-center fs-12 d-inline-block"><span class="media media-sm media-primary"><img alt="A"></span><div class="pr-1"><div class="font-weight-bold data-name"></div><div class="fs-10 data-id"></div></div></div>');
 		var avatar = select2find_data(data.all, $(this).attr('data-avatar') || 'avatar.tiny.url avatar.small.url');
+		var text = $(this).attr('data-title') ? select2find_data(data.all, $(this).attr('data-title')) : data.text;
 		if (avatar)
 		{
 			$('img', span).attr('src', avatar);
@@ -1128,9 +1136,9 @@ function select2result_users(data, option)
 		else
 		{
 			$('img', span).remove();
-			$('.media', span).html('<span>' + (data.text ? data.text.substr(0, 1) : 'IR')   + '</span>');
+			$('.media', span).html('<span>' + (text ? text.substr(0, 1) : 'IR')   + '</span>');
 		}
-		$('div.data-name', span).html(data.text || 'بی‌نام');
+		$('div.data-name', span).html(text || 'بی‌نام');
 		$('div.data-id', span).html(data.id);
 		return span;
 	}

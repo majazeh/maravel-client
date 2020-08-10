@@ -33,9 +33,15 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies($gate);
         Gate::resource('dashboard.terms', TermPolicy::class);
         Gate::resource('dashboard.users', UserPolicy::class);
-        Auth::viaRequest('cookie', function () {
+        Auth::viaRequest('cookie', function ($request) {
             if (User::token()) {
-                return User::me();
+                if (!$request->session()->get('User_cacheed_at') || $request->session()->get('User_cacheed_at') < time() - 5) {
+                    User::$me = (new User)->execute('me');
+                    $request->session()->put('User', User::$me->response()->toArray());
+                    $request->session()->put('User_cacheed_at', time());
+                }
+                $user = User::me();
+                return $user;
             }
             return null;
         });
