@@ -3,15 +3,7 @@
         <button id="aside-btn" class="btn btn-light d-lg-none">
             <i class="far fa-bars align-middle"></i>
         </button>
-
-        <div class="search-container">
-            <form action="">
-                <input type="search" id="search" class="fs-12">
-                <label for="search">
-                    <i class="fal fa-search"></i>
-                </label>
-            </form>
-        </div>
+        @include('layouts.quick_search')
     </div>
     <div class="d-flex align-items-center">
         <div class="profile-div {{auth()->user()->response('current') ? 'profile-div-danger' : ''}}">

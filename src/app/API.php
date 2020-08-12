@@ -206,11 +206,14 @@ class API extends Model
         {
             if (isset($response->meta->parent)) {
                 $parentClass = $this->parent;
-                $parent = new $parentClass((array) $response->{$response->meta->parent});
+                if($parentClass)
+                {
+                    $parent = new $parentClass((array) $response->{$response->meta->parent});
+                }
             }
             $item = new static((array) $response->data, $response);
 
-            if (isset($response->meta->parent)) {
+            if (isset($parent)) {
                 $item->parentModel = $parent;
             }
             return $item;
