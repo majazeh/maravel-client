@@ -14,7 +14,7 @@ use Route;
 
 class API extends Model
 {
-    protected $endpointPath, $route, $can, $allows, $response, $endpoint;
+    protected $endpointPath, $route, $can, $allows, $response, $endpoint, $routeResource;
     protected static $_cache = [];
     public $filterWith, $with = [], $fake = false, $parentModel, $filters;
     protected $guarded = [];
@@ -25,9 +25,10 @@ class API extends Model
         if(!empty($attributes))
         {
             foreach (['index', 'show', 'edit', 'create', 'delete', 'update', 'store'] as $value) {
-                $route = 'dashboard.' . $this->getTable() . '.' . $value;
+                $route = 'dashboard.' . ($this->routeResource ?: $this->getTable()) . '.' . $value;
+
                 if(Route::has($route)){
-                    $this->route[$value] = urldecode(route($route, !in_array($value, ['index', 'create', 'store']) ? [Str::singular($this->getTable()) => $attributes['id']] : null));
+                    $this->route[$value] = urldecode(route($route, !in_array($value, ['index', 'create', 'store']) ? [Str::singular($this->routeResource ?: $this->getTable()) => $attributes['id']] : null));
                 }
             }
         }
@@ -128,7 +129,7 @@ class API extends Model
             'accept-Language: ' . config('app.locale')
         );
 
-        if(User::token() && in_array('auth', request()->route()->getAction('middleware')))
+        if(User::token())
         {
             $headers[] = 'Authorization: Bearer ' . User::token();
         }
@@ -388,5 +389,27 @@ class API extends Model
     public function setFilters($filters)
     {
         $this->filters = $filters;
+    }
+    // protected function asDateTime($value)
+    // {
+    //     $date = parent::asDateTime($value);
+    //     if(config('app.locale') == 'fa')
+    //     {
+    //         return \Morilog\Jalali\Jalalian::forge($value);
+    //     }
+    //     return $date;
+    // }
+
+    public function __get($key)
+    {
+        $value = parent::__get($key);
+        if($value instanceof \Carbon\Carbon)
+        {
+            if(config('app.locale') == 'fa')
+            {
+                // return \Morilog\Jalali\Jalalian::forge($value);
+            }
+        }
+        return $value;
     }
 }

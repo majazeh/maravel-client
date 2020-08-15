@@ -100,7 +100,7 @@ class AppServiceProvider extends ServiceProvider
         Blade::directive('avatarOrName', function ($user) {
             return "<?php echo \$__env->make('components._avatarOrName', ['_userAvatar'=> $user], [\Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path'])])->render(); ?>";
         });
-        Blade::directive('time', function ($args) {
+        Blade::directive('responsiveTime', function ($args) {
             $args = explode(',', $args);
             $size = 'md';
             $time = $args[0];
@@ -109,13 +109,21 @@ class AppServiceProvider extends ServiceProvider
                 $args[1] = \str_replace(['"', "'", ' '], '', $args[1]);
                 $size = in_array($args[1], ['xs', 'sm', 'md', 'lg']) ? $args[1] : $size;
             }
-            $class = '_time';
-            if(in_array(config('app.locale'), ['fa', 'fa_IR']))
-            {
-                $class = '_fa_time';
-            }
-            return "<?php echo \$__env->make('components.$class', ['_time'=> $time, 'size' => '$size'], [\Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path'])])->render(); ?>";
+
+            return "<?php echo \$__env->make('components._responsiveTime', ['time'=> $time, 'size' => '$size'])->render(); ?>";
         });
+
+        Blade::directive('time', function ($args) {
+            $args = explode(',', $args);
+            $format = isset($args[1]) ? $args[1] : "'Y-m-d H:i:s'";
+            $time = $args[0];
+            if (in_array(config('app.locale'), ['fa', 'fa_IR'])) {
+                return "<?php echo \$__env->make('components._time', ['time' => \Morilog\Jalali\Jalalian::fromCarbon($time), 'format' => $format])->render(); ?>";
+            }
+            return "<?php echo \$__env->make('components._time', ['time' => $time, 'format' => $format])->render(); ?>";
+        });
+
+
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
@@ -125,3 +133,5 @@ class AppServiceProvider extends ServiceProvider
         View::addLocation(join(DIRECTORY_SEPARATOR, [__DIR__, '..', 'views']));
     }
 }
+
+
