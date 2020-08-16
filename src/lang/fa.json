@@ -82,5 +82,6 @@
     "Avatar" : "تصویر نمایشی",
     "New password" : "کلمه عبور جدید",
     "Current password": "کلمه عبور فعلی",
-    "Description" : "توضیحات"
+    "Description" : "توضیحات",
+    "To continue the process you need to login or register" : "برای ادامه فرایند نیاز است عضو سیستم باشید، یا عضو شوید"
 }

@@ -5,11 +5,11 @@
     <button class="btn btn-sm btn-clear p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="{{isset($model->response('meta')->filters->current->$key) ? 'fas' : 'fal'}} fa-filter fs-12"></i>
     </button>
-    @if (is_array($allowedFilter))
+    @if (is_array($allowedFilter) || is_object($allowedFilter))
         <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item fs-12 {{!request()->$key ? 'active' : ''}}" href="{{request()->create($model->url($model->currentPage()), 'GET', [$key => null])->getUri()}}">{{__("All Items")}}</a>
-            @foreach ($model->response('meta')->filters->allowed->$key as $item)
-                <a class="dropdown-item fs-12 {{request()->$key == $item ? 'active' : ''}}" href="{{request()->create($model->url($model->currentPage()), 'GET', [$key => $item])->getUri()}}">{{__(ucfirst($item))}}</a>
+                <a class="dropdown-item fs-12 {{!request()->$key ? 'active' : ''}}" href="{!!urldecode(request()->create($model->url($model->currentPage()), 'GET', [$key => null])->getUri())!!}">{{__("All Items")}}</a>
+            @foreach ($model->response('meta')->filters->allowed->$key as $k => $item)
+                <a class="dropdown-item fs-12 {{request()->$key == $item ? 'active' : ''}}" href="{!!urldecode(request()->create($model->url($model->currentPage()), 'GET', [$key => is_object($allowedFilter) ? $k : $item])->getUri())!!}">{{__(ucfirst($item))}}</a>
             @endforeach
         </div>
     @elseif(substr($allowedFilter, 0, 1) == '$')

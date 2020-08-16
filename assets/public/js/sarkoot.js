@@ -186,6 +186,7 @@
 			var page = input.attr('data-basePage');
 			if (page != $('body').attr('data-page'))
 			{
+				input.attr('data-basePage', $('body').attr('data-page'));
 				input.val('');
 			}
 
