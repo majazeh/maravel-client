@@ -53,6 +53,16 @@ class AppServiceProvider extends ServiceProvider
         Blade::directive('id', function ($model) {
             return "<?php echo \$__env->make('components._id', ['model' => $model, 'id'=> ($model)->serial], [\Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path'])])->render(); ?>";
         });
+        Blade::directive('showLink', function ($model) {
+            return "<?php echo \$__env->make('components._showLink', ['model' => $model, 'id'=> ($model)->serial], [\Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path'])])->render(); ?>";
+        });
+        Blade::directive('editLink', function ($model) {
+            return "<?php echo \$__env->make('components._editLink', ['model' => $model, 'id'=> ($model)->serial], [\Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path'])])->render(); ?>";
+        });
+        Blade::directive('duration', function ($args) {
+            list($duration, $type) = explode(',', $args);
+            return "<?php echo \$__env->make('components._duration', ['duration' => $duration, 'type'=> $type], [\Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path'])])->render(); ?>";
+        });
         Blade::directive('mobile', function ($mobile) {
             return "<?php echo \$__env->make('components._mobile', ['mobile'=> App\Mobile::parse($mobile)], [\Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path'])])->render(); ?>";
         });

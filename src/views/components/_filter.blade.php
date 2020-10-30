@@ -14,7 +14,7 @@
         </div>
     @elseif(substr($allowedFilter, 0, 1) == '$')
         <div class="dropdown-menu dropdown-menu-right keep-open">
-            <select class="select2-select" name="{{$key}}" id="filter-{{$key}}" data-url="{{route('dashboard.'. Str::plural(strtolower(substr($allowedFilter, 1))) .'.index')}}" data-title='title name id' data-lijax='change' data-state='both'></select>
+            <select class="select2-select" name="{{$key}}" id="filter-{{$key}}" data-url="{{route('dashboard.'. Str::plural(strtolower(substr($allowedFilter, 1))) .'.index')}}" data-title='{{ isset($select_title) ? $select_title : 'title name id' }}' data-template="{{ isset($select_template) ?  $select_template : null}}"  data-lijax='change' data-state='both'></select>
         </div>
     @endif
 @endif
