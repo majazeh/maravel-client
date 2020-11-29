@@ -17,6 +17,7 @@
         <li class="nav-item">
             <a class="nav-link direct fs-14" id="avatar-tab" data-toggle="tab" href="#avatar" role="tab" aria-controls="avatar" aria-selected="false">{{__('Avatar')}}</a>
         </li>
+        @includeIf('dashboard.users.forms.tabList')
     </ul>
     <div class="tab-content" id="myTabContent">
         @if (auth()->isAdmin())
@@ -34,6 +35,7 @@
         <div class="tab-pane fade pt-3" id="avatar" role="tabpanel" aria-labelledby="avatar-tab">
             @includeFirst(['dashboard.users.forms.' . $user->type . '.avatar', 'dashboard.users.forms.edit.avatar', 'dashboard.users.forms.edit._avatar'], ['some' => 'data'])
         </div>
+        @includeIf('dashboard.users.forms.tabContent')
     </div>
 </div>
 @endsection
