@@ -5,7 +5,7 @@
     <div class="col-lg-12">
         <div class="card mb-3">
             <div class="card-header">
-                @if ($user->can('edit'))
+                @if (auth()->id() == $user->id || auth()->user()->isAdmin())
                     {{__(ucfirst($user->type) . ' profile')}}
                     <a class="badge badge-primary fs-10" href="{{auth()->id() == $user->id ? route('dashboard.users.me.edit') : $user->route('edit')}}">
                         {{__('Edit')}}

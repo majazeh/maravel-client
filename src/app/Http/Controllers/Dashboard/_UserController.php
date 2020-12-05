@@ -57,11 +57,6 @@ class _UserController extends Controller
     public function show(Request $request, User $user)
     {
         $this->data->user = $user;
-        $method_name = \Str::camel('show_' . $user->type);
-        if(\method_exists($this, $method_name))
-        {
-            $this->{$method_name}(...func_get_args());
-        }
         return $this->view($request, 'dashboard.users.show');
     }
 
