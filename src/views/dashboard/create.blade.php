@@ -20,7 +20,9 @@
                             <button type="submit" class="btn {{$module->action == 'edit' ? 'btn-primary' : 'btn-success' }}">
                                 @yield('form-title', __(($module->action == 'create' ? "Create " : 'Edit ') . $module->singular))
                             </button>
-                            @if(Route::has($module->resource . '.index'))
+                            @if(request()->callback)
+                                <a href="{{request()->callback}}" class="btn btn-light">{{ __('Cancel') }}</a>
+                                @elseif(Route::has($module->resource . '.index'))
                                 <a href="{{route($module->resource . '.index', $module->parent ? request()->route()->parameters[$module->parent] : null)}}" class="btn btn-light">{{ __('Cancel') }}</a>
                             @endif
                         </div>

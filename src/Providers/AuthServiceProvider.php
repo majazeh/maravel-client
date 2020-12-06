@@ -35,7 +35,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::resource('dashboard.users', UserPolicy::class);
         Auth::viaRequest('cookie', function ($request) {
             if (User::token()) {
-                if (!$request->session()->get('User_cacheed_at') || $request->session()->get('User_cacheed_at') < time() - 5) {
+                if ($request->getMethod() == 'GET' && (!$request->session()->get('User_cacheed_at') || $request->session()->get('User_cacheed_at') < time() - 5)) {
                     User::$me = (new User)->execute('me');
                     $request->session()->put('User', User::$me->response()->toArray());
                     $request->session()->put('User_cacheed_at', time());

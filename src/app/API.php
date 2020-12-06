@@ -257,6 +257,11 @@ class API extends Model
         return $this->cache(sprintf($this->endpointPath, $parent), $params);
     }
 
+    public function _childShow($parent, $serial, array $params = [])
+    {
+        return $this->cache(sprintf($this->endpointPath, $parent). '/'. $serial, $params);
+    }
+
     public function _show($id, array $params = [])
     {
         return $this->cache('%s/' .$id, $params);
