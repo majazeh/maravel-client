@@ -64,7 +64,7 @@ class ApiResponse implements Arrayable
 
     public function json(array $params = [])
     {
-        if(request()->callback){
+        if(request()->callback && $this->response->is_ok == true){
             $params['redirect'] = request()->callback;
         }
         return response()->json(array_merge_recursive((array) $this->response, $params), $this->code);
