@@ -20,8 +20,9 @@ class _UserController extends Controller
 
     public function store(Request $request)
     {
-        return User::apiStore($request->except('_method'))->response()->json([
-            'redirect' => route('dashboard.users.create')
+        $user = User::apiStore($request->except('_method'));
+        return $user->response()->json([
+            'redirect' => route('dashboard.users.show', $user->id)
         ]);
     }
 
