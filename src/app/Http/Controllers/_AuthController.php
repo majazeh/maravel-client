@@ -29,7 +29,7 @@ class _AuthController extends Controller
         {
             $this->data->theoryRouteParms['previousUrl'] = $request->previousUrl ?: $request->session()->previousUrl();
         }
-        if($this->data->theoryRouteParms['previousUrl'] == route('auth')){
+        if(isset($this->data->theoryRouteParms['previousUrl']) && $this->data->theoryRouteParms['previousUrl'] == route('auth')){
             $this->data->theoryRouteParms['previousUrl'] = null;
         }
         if ($request->callback) {
