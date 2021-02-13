@@ -11,7 +11,7 @@
                                 @if (auth()->check() && auth()->user()->avatar_url->url('large'))
                                     <img src="{{auth()->user()->avatar_url->url('large')}}" alt="Avatar">
                                 @else
-                                    <img src="/images/logo/risloo.png" alt="{{ __('App Title') }}" width="64" height="64">
+                                    <img src="/images/logo/logo.png" alt="{{ __('App Title') }}" width="64" height="64">
                                 @endif
                             </a>
                         </div>
