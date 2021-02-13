@@ -1,16 +1,16 @@
 @section('auth-form')
-<div class="form-group">
-    <input type="text" class="form-control" id="username" name="username" placeholder="{{__('Mobile')}}">
+<div class="mb-4">
+    <input type="text" class="text-sm text-left dir-ltr border border-gray-200 rounded-sm" id="username" name="username" placeholder="{{ __('Mobile') }}">
 </div>
 
-<button class="btn btn-dark btn-block btn-login mb-3">{{__('Receive code')}}</button>
+<button class="text-sm w-full rounded-full h-10 bg-blue-600 text-white hover:bg-blue-700 transition mb-4">{{ __('Receive code') }}</button>
 @endsection
 
 @section('auth-nav')
-<div class="d-flex justify-content-center">
-        <a href="{{route('auth')}}" class="text-light text-decoration-none font-weight-bold fs-14">{{__('Login')}}</a>
-        <span class="px-2 text-white">|</span>
-        <a href="{{route('register')}}" class="text-light text-decoration-none fs-14">{{__('Register')}}</a>
+<div class="flex justify-center">
+    <a href="{{ route('auth') }}" class="text-sm text-gray-700 hover:text-gray-900 transition">{{ __('Login') }}</a>
+    <span class="px-4 text-gray-500">|</span>
+    <a href="{{ route('register') }}" class="text-sm text-gray-700 hover:text-gray-900 transition">{{ __('Register') }}</a>
 </div>
 @endsection
 @extends('auth.theory')
