@@ -2,8 +2,8 @@
 @include('layouts.head')
 
 @section('main')
-    <div class="flex-1 flex justify-center items-center">
-        <div class="border border-gray-200 p-8 rounded w-full mx-4 sm:w-96 sm:mx-auto">
+    <div class="flex-1 flex justify-center items-center bg-gray-50">
+        <div class="border border-gray-200 p-8 rounded w-full mx-4 sm:w-96 sm:mx-auto bg-white">
             <div class="mb-8">
                 <a href="{{ route(auth()->check() ? 'dashboard.home' : 'auth') }}" class="block mx-auto w-20 h-20 direct">
                     @if (auth()->check() && auth()->user()->avatar_url->url('large'))
