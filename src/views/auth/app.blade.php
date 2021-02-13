@@ -3,7 +3,7 @@
 
 @section('main')
     <div class="flex-1 flex justify-center items-center">
-        <div class="border border-gray-200 p-8 rounded sm:w-96">
+        <div class="border border-gray-200 p-8 rounded w-full mx-4 sm:w-96 sm:mx-auto">
             <div class="mb-2">
                 <a href="{{ route(auth()->check() ? 'dashboard.home' : 'auth') }}" class="block mx-auto w-12 h-12 direct">
                     @if (auth()->check() && auth()->user()->avatar_url->url('large'))
