@@ -1,5 +1,5 @@
 @section('auth-form')
-    <div class="mb-2">
+    <div class="mb-4">
         <input type="password" class="w-full text-sm text-left dir-ltr placeholder-right border border-gray-200 rounded-sm" id="code" name="code" placeholder="{{ __('Code')}} ">
     </div>
 
