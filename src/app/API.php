@@ -22,16 +22,6 @@ class API extends Model
     public function __construct(array $attributes = [], ApiResponse $response = null)
     {
         $this->casts['id'] = 'string';
-        if(!empty($attributes))
-        {
-            foreach (['index', 'show', 'edit', 'create', 'delete', 'update', 'store'] as $value) {
-                $route = 'dashboard.' . ($this->routeResource ?: $this->getTable()) . '.' . $value;
-
-                if(Route::has($route)){
-                    $this->route[$value] = urldecode(route($route, !in_array($value, ['index', 'create', 'store']) ? [Str::singular($this->routeResource ?: $this->getTable()) => $attributes['id']] : null));
-                }
-            }
-        }
         if(isset($attributes['can']))
         {
             $this->can = $attributes['can'];
@@ -75,6 +65,20 @@ class API extends Model
         parent::__construct($attributes);
         $this->casts['id'] = 'string';
         $this->response = $response;
+        if(!empty($attributes))
+        {
+            if(method_exists($this, 'setRoutes')){
+                $this->setRoutes($attributes);
+            }else{
+                foreach (['index', 'show', 'edit', 'create', 'delete', 'update', 'store'] as $value) {
+                    $route = 'dashboard.' . ($this->routeResource ?: $this->getTable()) . '.' . $value;
+    
+                    if(Route::has($route)){
+                        $this->route[$value] = urldecode(route($route, !in_array($value, ['index', 'create', 'store']) ? [Str::singular($this->routeResource ?: $this->getTable()) => $attributes['id']] : null));
+                    }
+                }
+            }
+        }
     }
 
     public function response($key = null)
