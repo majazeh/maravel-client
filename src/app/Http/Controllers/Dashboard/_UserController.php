@@ -42,8 +42,10 @@ class _UserController extends Controller
     public function update(Request $request, $user)
     {
         $reesponse = User::apiUpdate($user, $request->except('_method'));
-        $request->session()->put('User', (new User)->execute("me")->response()->toArray());
-        return $reesponse->response()->json([
+        if(auth()->id() == $reesponse->id){
+            $request->session()->put('User', (new User)->execute("me")->response()->toArray());
+        }
+        return response()->json([
             'redirect' => route('dashboard.users.edit', [
                 'user' => $user,
                 'userview' => $request->userview
