@@ -69,6 +69,10 @@ class _User extends API
     {
         return (new static)->execute("auth/theory/$key", $parameters, 'post');
     }
+    public static function authResult($key, array $parameters = [])
+    {
+        return (new static)->execute("auth/theory/$key", $parameters, 'get');
+    }
     public static function recovery(array $parameters = [])
     {
         return (new static)->execute("auth/recovery", $parameters, 'post');

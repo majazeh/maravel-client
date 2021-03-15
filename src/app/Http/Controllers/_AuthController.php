@@ -36,6 +36,12 @@ class _AuthController extends Controller
             $this->data->theoryRouteParms['callback'] = $request->callback;
 
         }
+        if($request->authorized_key){
+            $auth = $this->auth($request);
+            if($auth['redirect']){
+                return redirect($auth['redirect']);
+            }
+        }
         return $this->view($request, "auth.$method");
     }
 
@@ -73,6 +79,8 @@ class _AuthController extends Controller
     {
         $this->data->global->title = __('Auth theory '. $request->form);
         $form = $request->form != 'auth' || $request->user() ? '.' . $request->form : '';
+        $result = 'authTheoryResult'. ucfirst(substr($form, 1));
+        $theory = $this->data->theory = method_exists($this, $result) ? $this->$result($request, User::authResult($key)) : null;
         if ($form == '.auth') {
             try {
                 $auth = User::authTheory($key);
