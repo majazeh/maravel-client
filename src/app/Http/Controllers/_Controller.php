@@ -61,7 +61,11 @@ class _Controller extends BaseController
             return $this->data->result;
         }
         try {
-            $view = response(view($view, (array) $this->data));
+            if(isset($this->errors) && count($this->errors)){
+                $view = response(view($view, (array) $this->data)->withErrors($this->errors));
+            }else{
+                $view = response(view($view, (array) $this->data));
+            }
         } catch (\Throwable $th) {
             if(method_exists($th, 'getPrevious') && $th->getPrevious()){
                 throw $th->getPrevious();

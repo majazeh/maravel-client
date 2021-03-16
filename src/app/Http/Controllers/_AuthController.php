@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Http\Request;
 use App\Exceptions\APIException;
 use Symfony\Component\HttpFoundation\Cookie;
+use Illuminate\Validation\ValidationException;
 
 class _AuthController extends Controller
 {
@@ -37,9 +38,13 @@ class _AuthController extends Controller
 
         }
         if($request->authorized_key){
-            $auth = $this->auth($request);
-            if($auth['redirect']){
-                return redirect($auth['redirect']);
+            try{
+                $auth = $this->auth($request);
+                if($auth['redirect']){
+                    return redirect($auth['redirect']);
+                }
+            }catch(\Exception $e){
+                $this->errors = (array) $e->response()->errors;
             }
         }
         return $this->view($request, "auth.$method");
