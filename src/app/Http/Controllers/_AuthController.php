@@ -44,7 +44,8 @@ class _AuthController extends Controller
                     return redirect($auth['redirect']);
                 }
             }catch(\Exception $e){
-                $this->errors = (array) $e->response()->errors;
+
+                $this->errors = $e->response()->errors ?: ['authorized_key' => [$e->response()->message_text]];
             }
         }
         return $this->view($request, "auth.$method");

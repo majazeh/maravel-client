@@ -63,6 +63,11 @@ class AppServiceProvider extends ServiceProvider
             list($duration, $type) = explode(',', $args);
             return "<?php echo \$__env->make('components._duration', ['duration' => $duration, 'type'=> $type], [\Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path'])])->render(); ?>";
         });
+
+        Blade::directive('attachmentLink', function ($args) {
+            list($avatar, $mode) = explode(',', $args);
+            return "<?php echo isset($avatar) && {$avatar}->where('mode', $mode)->first() ? {$avatar}->where('mode', $mode)->first()->url : ''?>";
+        });
         Blade::directive('mobile', function ($mobile) {
             return "<?php echo \$__env->make('components._mobile', ['mobile'=> App\Mobile::parse($mobile)], [\Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path'])])->render(); ?>";
         });
