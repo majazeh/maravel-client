@@ -37,17 +37,23 @@ class _AuthController extends Controller
             $this->data->theoryRouteParms['callback'] = $request->callback;
 
         }
-        if($request->authorized_key){
-            try{
-                $auth = $this->auth($request);
-                if($auth['redirect']){
-                    return redirect($auth['redirect']);
-                }
-            }catch(\Exception $e){
-
-                $this->errors = $e->response()->errors ?: ['authorized_key' => [$e->response()->message_text]];
-            }
-        }
+        // if($request->authorized_key){
+        //     try{
+        //         $auth = $this->auth($request);
+        //         if($auth instanceof \Illuminate\Http\Response){
+        //             return $auth;
+        //         }
+        //         if($auth['redirect']){
+        //             return redirect($auth['redirect']);
+        //         }
+        //     }catch(\Exception $e){
+        //         if(method_exists($e, 'response')){
+        //             $this->errors = $e->response()->errors ?: ['authorized_key' => [$e->response()->message_text]];
+        //         }else{
+        //             throw $e;
+        //         }
+        //     }
+        // }
         return $this->view($request, "auth.$method");
     }
 
@@ -65,7 +71,8 @@ class _AuthController extends Controller
         if (auth()->check()) {
             return redirect()->route('dashboard.home');
         }
-        return $this->authForm($request, 'recovery');
+        $this->urlRd($request, 'recovery');
+        return $this->view($request, 'auth.recovery');
     }
 
     public function auth(Request $request)
@@ -83,19 +90,22 @@ class _AuthController extends Controller
 
     public function authTheoryForm(Request $request, $key)
     {
-        $this->data->global->title = __('Auth theory '. $request->form);
-        $form = $request->form != 'auth' || $request->user() ? '.' . $request->form : '';
-        $this->data->global->page .= '-' . $request->form;
-        $result = 'authTheoryResult'. ucfirst(substr($form, 1));
-        $theory = $this->data->theory = method_exists($this, $result) ? $this->$result($request, User::authResult($key)) : null;
-        if ($form == '.auth') {
-            try {
-                $auth = User::authTheory($key);
-                $this->data->message = $auth->response('message_text');
-            } catch (APIException $e) {
-                $this->data->message = $auth->response('message_text');
-            }
+        try {
+            $model = User::authResult($key);
+        } catch (APIException $e) {
+            return redirect()->route('auth');
         }
+        $theory = $model->response('theory');
+        $result = 'authTheoryResult'. ucfirst($theory);
+         $this->data->theory = method_exists($this, $result) ? $this->$result($request, $model) : $model;
+        $this->data->global->title = __('Auth theory '. $theory);
+        $form = $theory != 'auth' || $request->user() ? '.' . $theory : '';
+        $this->data->global->page .= '-' . $theory;
+        $this->urlRd($request, $key);
+        return $this->view($request, 'auth.theory' . $form);
+    }
+
+    public function urlRd($request, $key){
         $this->data->theoryRouteParms = [
             'key' => $key
         ];
@@ -106,7 +116,6 @@ class _AuthController extends Controller
         if ($request->previousUrl) {
             $this->data->theoryRouteParms['previousUrl'] = $request->previousUrl;
         }
-        return $this->view($request, 'auth.theory' . $form);
     }
 
     public function authTheory(Request $request, $key)
@@ -138,10 +147,6 @@ class _AuthController extends Controller
     {
 
         $theory = [];
-        $key = null;
-        if ($auth->response('theory')) {
-            $theory['form'] = $auth->response('theory');
-        }
         if ($auth->response('callback')) {
             $theory['callback'] = $auth->response('callback');
         }
@@ -173,6 +178,7 @@ class _AuthController extends Controller
         {
             $response = $this->$theoryMethod($request, $auth, $response);
         }
+        
         return $response;
     }
     public function authTheoryAuth($request, $auth, $response){
