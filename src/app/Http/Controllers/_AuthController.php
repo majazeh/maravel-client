@@ -46,8 +46,9 @@ class _AuthController extends Controller
         if(auth()->check()){
             return redirect()->route('dashboard.home');
         }
-        $this->data->route = 'auth.register';
-        return $this->authForm($request, 'register');
+        $this->data->route = 'register';
+        $this->urlRd($request, 'register');
+        return $this->view($request, 'auth.register');
     }
 
     public function recoveryForm(Request $request)
