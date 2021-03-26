@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Exceptions\APIException;
 use Symfony\Component\HttpFoundation\Cookie;
 use Illuminate\Validation\ValidationException;
-
+use Symfony\Component\HttpFoundation\Response;
 class _AuthController extends Controller
 {
     public function __construct(Request $request)
@@ -98,6 +98,9 @@ class _AuthController extends Controller
         $theory = $model->response('theory');
         $result = 'authTheoryResult'. ucfirst($theory);
          $this->data->theory = method_exists($this, $result) ? $this->$result($request, $model) : $model;
+         if($this->data->theory instanceof Response){
+             return $this->data->theory;
+         }
         $this->data->global->title = __('Auth theory '. $theory);
         $form = $theory != 'auth' || $request->user() ? '.' . $theory : '';
         $this->data->global->page .= '-' . $theory;
