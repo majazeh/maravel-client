@@ -37,23 +37,7 @@ class _AuthController extends Controller
             $this->data->theoryRouteParms['callback'] = $request->callback;
 
         }
-        // if($request->authorized_key){
-        //     try{
-        //         $auth = $this->auth($request);
-        //         if($auth instanceof \Illuminate\Http\Response){
-        //             return $auth;
-        //         }
-        //         if($auth['redirect']){
-        //             return redirect($auth['redirect']);
-        //         }
-        //     }catch(\Exception $e){
-        //         if(method_exists($e, 'response')){
-        //             $this->errors = $e->response()->errors ?: ['authorized_key' => [$e->response()->message_text]];
-        //         }else{
-        //             throw $e;
-        //         }
-        //     }
-        // }
+        $this->data->route = 'auth';
         return $this->view($request, "auth.$method");
     }
 
@@ -62,6 +46,7 @@ class _AuthController extends Controller
         if(auth()->check()){
             return redirect()->route('dashboard.home');
         }
+        $this->data->route = 'auth.register';
         return $this->authForm($request, 'register');
     }
 
@@ -72,6 +57,7 @@ class _AuthController extends Controller
             return redirect()->route('dashboard.home');
         }
         $this->urlRd($request, 'recovery');
+        $this->data->route = 'auth.recovery';
         return $this->view($request, 'auth.recovery');
     }
 
@@ -88,19 +74,16 @@ class _AuthController extends Controller
         return $this->authParse(User::recovery($request->all()), $request);
     }
 
-    public function authTheoryForm(Request $request, $key)
+    public function authTheoryForm(Request $request, $key, $model = null)
     {
         try {
-            $model = User::authResult($key);
+            $model = $model ?: User::authResult($key);
         } catch (APIException $e) {
             return redirect()->route('auth');
         }
+        $this->data->route = 'auth.theory';
         $theory = $model->response('theory');
-        $result = 'authTheoryResult'. ucfirst($theory);
-         $this->data->theory = method_exists($this, $result) ? $this->$result($request, $model) : $model;
-         if($this->data->theory instanceof Response){
-             return $this->data->theory;
-         }
+        $this->data->theory = $model;
         $this->data->global->title = __('Auth theory '. $theory);
         $form = $theory != 'auth' || $request->user() ? '.' . $theory : '';
         $this->data->global->page .= '-' . $theory;
@@ -181,7 +164,10 @@ class _AuthController extends Controller
         {
             $response = $this->$theoryMethod($request, $auth, $response);
         }
-        
+        if(!$response['direct'] && isset($theory['key'])){
+            $this->data->global->state = $response['redirect'];
+            return $this->authTheoryForm($request, $theory['key'], $auth, $response);
+        }
         return $response;
     }
     public function authTheoryAuth($request, $auth, $response){
