@@ -86,7 +86,7 @@ class _AuthController extends Controller
         $this->data->theory = $model;
         $this->data->global->title = __('Auth theory '. $theory);
         $form = $theory != 'auth' || $request->user() ? '.' . $theory : '';
-        $this->data->global->page .= '-' . $theory;
+        $this->data->global->page = 'auth-theory-' . $theory;
         $this->urlRd($request, $key);
         return $this->view($request, 'auth.theory' . $form);
     }
