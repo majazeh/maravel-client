@@ -9,7 +9,7 @@ Breadcrumbs::for('dashboard.home', function ($trail, $data) {
 # Users
 Breadcrumbs::for('dashboard.users.index', function ($trail, $data) {
     $trail->parent('dashboard.home', $data);
-    $trail->push(__('Users'), route('home'));
+    $trail->push(__('Users'), route('dashboard.users.index'));
 });
 Breadcrumbs::for('dashboard.users.show', function ($trail, $data) {
     $trail->parent('dashboard.users.index', $data);
