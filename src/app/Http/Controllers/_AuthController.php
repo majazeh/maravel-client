@@ -64,7 +64,15 @@ class _AuthController extends Controller
 
     public function auth(Request $request)
     {
-        return $this->authParse(User::auth($request->all()), $request);
+        try{
+            return $this->authParse(User::auth($request->all()), $request);
+        }catch(\Exception $e){
+            return $e->response()->json([
+                'errors' => [
+                    'authorized_key' => [$e->response()->message_text]
+                ]
+            ]);
+        }
     }
     public function register(Request $request)
     {
@@ -164,6 +172,9 @@ class _AuthController extends Controller
         if(method_exists($this, $theoryMethod) && $auth->response('theory'))
         {
             $response = $this->$theoryMethod($request, $auth, $response);
+        }
+        if($response instanceof \Illuminate\Http\Response){
+            return $response;
         }
         if(!$response['direct'] && isset($theory['key'])){
             $this->data->global->state = $response['redirect'];
