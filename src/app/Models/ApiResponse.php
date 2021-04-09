@@ -47,7 +47,7 @@ class ApiResponse implements Arrayable
             $this->response->url = str_replace(API::path(), app('request')->getSchemeAndHttpHost() . '/', $this->response->url);
         }
 
-        if($this->response->message == 'UNAUTHENTICATED.')
+        if($this->response->message == 'UNAUTHENTICATED.' || $this->response->message == 'UNAUTHENTICATED')
         {
             session()->put('APIToken', null);
             return redirect()->route('auth')->send();
