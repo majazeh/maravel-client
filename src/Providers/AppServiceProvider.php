@@ -133,7 +133,7 @@ class AppServiceProvider extends ServiceProvider
             $format = isset($args[1]) ? $args[1] : "'Y-m-d H:i:s'";
             $time = $args[0];
             if (in_array(config('app.locale'), ['fa', 'fa_IR'])) {
-                return "<?php echo \$__env->make('components._time', ['time' => \Morilog\Jalali\Jalalian::fromCarbon($time), 'format' => $format])->render(); ?>";
+                return "<?php echo $time ? \$__env->make('components._time', ['time' => \Morilog\Jalali\Jalalian::fromCarbon($time), 'format' => $format])->render(): null; ?>";
             }
             return "<?php echo \$__env->make('components._time', ['time' => $time, 'format' => $format])->render(); ?>";
         });
