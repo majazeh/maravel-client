@@ -205,12 +205,16 @@ class API extends Model
                 }
                 return $paginator;
             }
-            return new ApiCollection($response, $items);
+            $collection = new ApiCollection($response, $items);
+            if (isset($response->meta->parent)) {
+                $collection->parentModel = $parent;
+            }
+            return $collection;
         }
         else
         {
             if (isset($response->meta->parent)) {
-                $parentClass = $this->parent;
+                $parentClass = $this->parentClass($response->meta->parent);
                 if($parentClass)
                 {
                     $parent = new $parentClass((array) $response->{$response->meta->parent});
@@ -219,7 +223,7 @@ class API extends Model
             $item = new static((array) $response->data, $response);
 
             if (isset($parent)) {
-                $item->parentModel = $parent;
+                    $item->parentModel = $parent;
             }
             return $item;
         }
@@ -420,5 +424,9 @@ class API extends Model
             }
         }
         return $value;
+    }
+
+    public function parentClass($parent){
+        return $this->parent;
     }
 }
