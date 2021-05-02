@@ -179,7 +179,7 @@ class API extends Model
         {
             $items = [];
             if (isset($response->meta->parent)) {
-                $parentClass = $this->parent;
+                $parentClass = $this->parentClass($response->meta->parent);
                 $parent = new $parentClass((array) $response->{$response->meta->parent});
             }
             foreach ($response->data as $key => $value) {
