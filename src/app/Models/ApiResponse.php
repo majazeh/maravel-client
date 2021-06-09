@@ -46,7 +46,12 @@ class ApiResponse implements Arrayable
         if (isset($this->response->url)) {
             $this->response->url = str_replace(API::path(), app('request')->getSchemeAndHttpHost() . '/', $this->response->url);
         }
-
+        $me = (new User())->endpoint('me');
+        
+        if(is_resource($curl) &&  curl_getinfo($curl)['url'] == $me && $this->response->is_ok == false && $this->response->message == 'THIS_ACTION_IS_UNAUTHORIZED'){
+            session()->put('APIToken', null);
+            return redirect()->route('auth')->send();
+        }
         if($this->response->message == 'UNAUTHENTICATED.' || $this->response->message == 'UNAUTHENTICATED')
         {
             session()->put('APIToken', null);
