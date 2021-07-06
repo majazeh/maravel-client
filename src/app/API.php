@@ -209,6 +209,7 @@ class API extends Model
             if (isset($response->meta->parent)) {
                 $collection->parentModel = $parent;
             }
+            $collection->loadFilters($this);
             return $collection;
         }
         else
@@ -428,5 +429,25 @@ class API extends Model
 
     public function parentClass($parent){
         return $this->parent;
+    }
+
+    public function setRawAttributes(array $attributes, $sync = false)
+    {
+        foreach($attributes as $key => $attribute){
+            if(key_exists($key, $this->with)){
+                $with = $this->with[$key];
+                $this->setRelation($key, is_object($attribute) ? new $with((array) $attribute) : $with::hydrate($attribute));
+                unset($attributes[$key]);
+            }
+        }
+        $this->attributes = $attributes;
+
+        if ($sync) {
+            $this->syncOriginal();
+        }
+
+        $this->classCastCache = [];
+
+        return $this;
     }
 }
