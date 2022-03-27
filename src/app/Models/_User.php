@@ -73,6 +73,13 @@ class _User extends API
     {
         return (new static)->execute("auth/theory/$key", $parameters, 'get');
     }
+    public static function authPreview($key, array $parameters = [])
+    {
+        $result = (new static)->execute("auth/$key", $parameters, 'get');
+        if(method_exists('\App\AuthTheory', $result->response('action'))){
+            return \App\AuthTheory::{$result->response('action')}($result->response()->toArray());
+        }
+    }
     public static function recovery(array $parameters = [])
     {
         return (new static)->execute("auth/recovery", $parameters, 'post');
