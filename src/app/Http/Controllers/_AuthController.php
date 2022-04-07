@@ -27,15 +27,19 @@ class _AuthController extends Controller
     public function authForm(Request $request, $method = 'home')
     {
         if($request->authorized_key){
-            $this->data->authPreview = $authPreview = User::authPreview($request->authorized_key);
-            $this->data->route = isset($authPreview['mode']) ? $authPreview['mode'] : null;
-            $this->data->theoryRouteParms = [];
-            $this->data->global->description = isset($authPreview['description']) ? $authPreview['description'] : $this->data->global->description;
-            $this->data->global->title = isset($authPreview['title']) ? $authPreview['title'] : $this->data->global->title;
-            if(isset($authPreview['view'])){
-                return $this->view($request, $authPreview['view']);
-            }elseif($authPreview['redirect']){
-                return redirect($authPreview['redirect']);
+            try{
+                $this->data->authPreview = $authPreview = User::authPreview($request->authorized_key);
+                $this->data->route = isset($authPreview['mode']) ? $authPreview['mode'] : null;
+                $this->data->theoryRouteParms = [];
+                $this->data->global->description = isset($authPreview['description']) ? $authPreview['description'] : $this->data->global->description;
+                $this->data->global->title = isset($authPreview['title']) ? $authPreview['title'] : $this->data->global->title;
+                if(isset($authPreview['view'])){
+                    return $this->view($request, $authPreview['view']);
+                }elseif($authPreview['redirect']){
+                    return redirect($authPreview['redirect']);
+                }
+            }catch(Exception $e){
+                $this->data->authError = $e instanceof \App\Exceptions\APIException ? $e->response()->message_text : $e->getMessage();
             }
         }
         $this->data->theoryRouteParms = [];
