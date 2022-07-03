@@ -1,5 +1,4 @@
 <?php
-
 return [
     'admins' => ['admin', 'supervisor'],
     'types' => [
