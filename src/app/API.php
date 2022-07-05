@@ -98,7 +98,7 @@ class API extends Model
 
     public static function path()
     {
-        return trim(env('SERVER_URL'), '/') . '/';
+        return trim(config('app.api_url'), '/') . '/';
     }
 
     public function endpoint($endpoint = null, array $data = [], $method = 'GET')
