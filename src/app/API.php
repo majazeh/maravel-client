@@ -142,6 +142,8 @@ class API extends Model
 
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, strtoupper($method));
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);    
         if($method != 'GET')
         {
             $hasFile = false;
