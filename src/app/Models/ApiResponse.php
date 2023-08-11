@@ -34,7 +34,7 @@ class ApiResponse implements Arrayable
         }
 
         $this->response = is_array($response) || is_object($response) ? (object) $response : json_decode($response);
-        if (json_last_error() !== JSON_ERROR_NONE) {
+        if (!$this->response) {
             echo($response);
             exit();
             throw new \JsonException('Could not parse data');
