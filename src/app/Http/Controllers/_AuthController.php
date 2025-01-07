@@ -207,14 +207,22 @@ class _AuthController extends Controller
     }
     public function logout(Request $request)
     {
-        $logout = (new User)->execute('logout', [], 'post');
         $request->session()->forget('APIToken');
         $request->session()->forget('User');
-        return response()->json(array_merge($logout->response()->toArray(), [
-            'redirect' => route('auth', ['previousUrl' => route('dashboard.home')]),
-            'direct' => true
-        ]))
-        ->withCookie(new Cookie('token', null));
+        try{
+            $logout = (new User)->execute('logout', [], 'post');
+            return response()->json(array_merge($logout->response()->toArray(), [
+                'redirect' => route('auth', ['previousUrl' => route('dashboard.home')]),
+                'direct' => true
+            ]))
+            ->withCookie(new Cookie('token', null));
+        }catch(Exception $e){
+            return response()->json([
+                'redirect' => route('auth', ['previousUrl' => route('dashboard.home')]),
+                'direct' => true
+            ])
+            ->withCookie(new Cookie('token', null));
+        }
     }
     public function authAs(Request $request, $user)
     {
